@@ -1,7 +1,7 @@
 #include "PhysEngineApp.h"
 
-int main() {
-	
+int main()
+{
 	// allocation
 	auto app = new PhysEngineApp();
 
