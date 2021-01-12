@@ -20,5 +20,6 @@ public:
 	virtual void Draw(Renderer2D* renderer);
 
 private:
+	vec2 gravity = vec2(0, -9.81f);
 	vector<PhysicsObject*> objects;
 };
