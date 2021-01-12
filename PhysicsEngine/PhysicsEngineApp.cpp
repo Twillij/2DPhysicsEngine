@@ -1,9 +1,9 @@
-#include "PhysEngineApp.h"
+#include "PhysicsEngineApp.h"
 #include "Texture.h"
 #include "Font.h"
 #include "Input.h"
 
-bool PhysEngineApp::startup() {
+bool PhysicsEngineApp::startup() {
 	
 	renderer = new Renderer2D();
 	font = new Font("./font/consolas.ttf", 32);
@@ -11,13 +11,13 @@ bool PhysEngineApp::startup() {
 	return true;
 }
 
-void PhysEngineApp::shutdown()
+void PhysicsEngineApp::shutdown()
 {
 	delete font;
 	delete renderer;
 }
 
-void PhysEngineApp::update(float deltaTime)
+void PhysicsEngineApp::update(float deltaTime)
 {
 	// input example
 	Input* input = Input::getInstance();
@@ -27,7 +27,7 @@ void PhysEngineApp::update(float deltaTime)
 		quit();
 }
 
-void PhysEngineApp::draw()
+void PhysicsEngineApp::draw()
 {
 	// wipe the screen to the background colour
 	clearScreen();

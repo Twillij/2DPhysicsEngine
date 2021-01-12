@@ -4,11 +4,11 @@
 
 using namespace aie;
 
-class PhysEngineApp : public aie::Application
+class PhysicsEngineApp : public aie::Application
 {
 public:
-	PhysEngineApp() {}
-	virtual ~PhysEngineApp() {}
+	PhysicsEngineApp() {}
+	virtual ~PhysicsEngineApp() {}
 
 	virtual bool startup();
 	virtual void shutdown();
