@@ -13,10 +13,12 @@ public:
 	PhysicsWorld() {}
 	virtual ~PhysicsWorld();
 
+	bool SpawnObject(PhysicsObject* object);
+	bool DestroyObject(PhysicsObject* object);
+
 	virtual void Update(float deltaTime);
 	virtual void Draw(Renderer2D* renderer);
 
 private:
 	vector<PhysicsObject*> objects;
 };
-

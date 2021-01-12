@@ -8,4 +8,3 @@ public:
 
 	float mass = 0;
 };
-
