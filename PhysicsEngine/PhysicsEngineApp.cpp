@@ -3,8 +3,9 @@
 #include "Font.h"
 #include "Input.h"
 
-bool PhysicsEngineApp::startup() {
-	
+bool PhysicsEngineApp::startup()
+{
+	world = new PhysicsWorld();
 	renderer = new Renderer2D();
 	font = new Font("./font/consolas.ttf", 32);
 
@@ -15,12 +16,15 @@ void PhysicsEngineApp::shutdown()
 {
 	delete font;
 	delete renderer;
+	delete world;
 }
 
 void PhysicsEngineApp::update(float deltaTime)
 {
 	// input example
 	Input* input = Input::getInstance();
+
+	world->Update(deltaTime);
 
 	// exit the application
 	if (input->isKeyDown(INPUT_KEY_ESCAPE))
@@ -36,7 +40,8 @@ void PhysicsEngineApp::draw()
 	renderer->begin();
 
 	// draw your stuff here!
-	
+	world->Draw(renderer);
+
 	// output some text, uses the last used colour
 	renderer->drawText(font, "Press ESC to quit", 0, 0);
 

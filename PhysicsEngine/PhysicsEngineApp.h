@@ -1,6 +1,7 @@
 #pragma once
 #include "Application.h"
 #include "Renderer2D.h"
+#include "PhysicsWorld.h"
 
 using namespace aie;
 
@@ -17,6 +18,7 @@ public:
 	virtual void draw();
 
 protected:
-	Renderer2D* renderer;
-	Font* font;
+	PhysicsWorld* world = nullptr;
+	Renderer2D* renderer = nullptr;
+	Font* font = nullptr;
 };
