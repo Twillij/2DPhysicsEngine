@@ -167,17 +167,17 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Collision.cpp" />
     <ClCompile Include="PhysicsEngineApp.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="PhysicsObject.cpp" />
     <ClCompile Include="PhysicsWorld.cpp" />
-    <ClCompile Include="RigidBody.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Collision.h" />
     <ClInclude Include="PhysicsEngineApp.h" />
     <ClInclude Include="PhysicsObject.h" />
     <ClInclude Include="PhysicsWorld.h" />
-    <ClInclude Include="RigidBody.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

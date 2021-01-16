@@ -6,7 +6,6 @@ using namespace aie;
 using namespace glm;
 
 class Collider;
-class RigidBody;
 
 class PhysicsObject
 {
@@ -20,7 +19,6 @@ public:
 	float mass = 0;
 
 	Collider* collider = nullptr;
-	RigidBody* rigidBody = nullptr;
 
 	virtual void Update(float deltaTime) {}
 	virtual void Draw(Renderer2D* renderer) {}
