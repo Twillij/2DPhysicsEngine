@@ -8,11 +8,13 @@ public:
 
 	enum class ColliderType
 	{
-		Plane,
+		Point,
+		Line,
 		Circle,
-		Box,
-		Mesh
+		Rectangle,
+		Polygon
 	};
 
-	ColliderType type;
+protected:
+	ColliderType type = ColliderType::Point;
 };
