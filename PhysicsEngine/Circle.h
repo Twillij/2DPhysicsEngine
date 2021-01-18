@@ -6,4 +6,6 @@ class Circle : public PhysicsObject
 public:
 	Circle();
 	~Circle() {}
+
+	
 };

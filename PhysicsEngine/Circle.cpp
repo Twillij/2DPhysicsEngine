@@ -1,7 +1,7 @@
 #include "Circle.h"
-#include "Collider.h"
+#include "CircleCollider.h"
 
 Circle::Circle()
 {
-	collider = new Collider();
+	//collider = new CircleCollider();
 }

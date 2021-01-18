@@ -51,6 +51,12 @@
     <ClCompile Include="CircleCollider.cpp">
       <Filter>Source Files\Colliders</Filter>
     </ClCompile>
+    <ClCompile Include="LineCollider.cpp">
+      <Filter>Source Files\Colliders</Filter>
+    </ClCompile>
+    <ClCompile Include="CollisionDetection.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="PhysicsEngineApp.h">
@@ -73,6 +79,12 @@
     </ClInclude>
     <ClInclude Include="CircleCollider.h">
       <Filter>Header Files\Colliders</Filter>
+    </ClInclude>
+    <ClInclude Include="LineCollider.h">
+      <Filter>Header Files\Colliders</Filter>
+    </ClInclude>
+    <ClInclude Include="CollisionDetection.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

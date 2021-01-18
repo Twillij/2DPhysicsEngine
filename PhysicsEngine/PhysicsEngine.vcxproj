@@ -171,6 +171,8 @@
     <ClCompile Include="CircleCollider.cpp" />
     <ClCompile Include="Collider.cpp" />
     <ClCompile Include="Collision.cpp" />
+    <ClCompile Include="CollisionDetection.cpp" />
+    <ClCompile Include="LineCollider.cpp" />
     <ClCompile Include="PhysicsEngineApp.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="PhysicsObject.cpp" />
@@ -181,6 +183,8 @@
     <ClInclude Include="CircleCollider.h" />
     <ClInclude Include="Collider.h" />
     <ClInclude Include="Collision.h" />
+    <ClInclude Include="CollisionDetection.h" />
+    <ClInclude Include="LineCollider.h" />
     <ClInclude Include="PhysicsEngineApp.h" />
     <ClInclude Include="PhysicsObject.h" />
     <ClInclude Include="PhysicsWorld.h" />
