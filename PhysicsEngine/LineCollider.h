@@ -1,8 +1,5 @@
 #pragma once
 #include "Collider.h"
-#include <glm/vec2.hpp>
-
-using namespace glm;
 
 class LineCollider : public Collider
 {
@@ -17,4 +14,6 @@ public:
 	Collision CheckCollision(CircleCollider* circCollider) override;
 	//Collision CheckCollision(RectangleCollider* rectCollider) override;
 	//Collision CheckCollision(PolygonCollider* polyCollider) override;
+
+	float GetLength();
 };

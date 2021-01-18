@@ -1,5 +1,6 @@
 #include "PhysicsWorld.h"
 #include "PhysicsObject.h"
+#include "Collision.h"
 
 PhysicsWorld::~PhysicsWorld()
 {
@@ -33,10 +34,29 @@ bool PhysicsWorld::DestroyObject(PhysicsObject* object)
 	return false;
 }
 
+void PhysicsWorld::CheckCollisions()
+{
+	int objectCount = objects.size();
+	vector<Collision> collisions;
+
+	for (int i = 0; i < objectCount - 1; ++i)
+	{
+		for (int j = i + 1; j < objectCount; ++j)
+		{
+			Collision collision = objects[i]->CheckCollision(objects[j]);
+
+			if (collision.hasCollided)
+				collisions.push_back(collision);
+		}
+	}
+}
+
 void PhysicsWorld::Update(float deltaTime)
 {
 	for (int i = 0; i < objects.size(); ++i)
 		objects[i]->Update(deltaTime);
+
+	CheckCollisions();
 }
 
 void PhysicsWorld::Draw(Renderer2D* renderer)

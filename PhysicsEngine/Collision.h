@@ -9,16 +9,19 @@ class PhysicsObject;
 class Collision
 {
 public:
+	Collision(PhysicsObject* a, PhysicsObject* b);
 	Collision(Collider* a, Collider* b);
 	~Collision() {}
 
 	PhysicsObject* objectA = nullptr;
 	PhysicsObject* objectB = nullptr;
 
+	bool hasCollided = false;
 	vec2 pointA = vec2(0);
 	vec2 pointB = vec2(0);
 	vec2 normal = vec2(0);
 	float depth = 0;
-
-	bool hasCollided = false;
+	
+	vec2 CalculateNormal(bool setValue = true);
+	float CalculateDepth(bool setValue = true);
 };

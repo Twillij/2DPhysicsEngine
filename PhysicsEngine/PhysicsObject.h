@@ -6,6 +6,7 @@ using namespace aie;
 using namespace glm;
 
 class Collider;
+class Collision;
 
 class PhysicsObject
 {
@@ -20,6 +21,7 @@ public:
 	Collider* collider = nullptr;
 
 	void ApplyForce(vec2 force);
+	Collision CheckCollision(PhysicsObject* other);
 
 	virtual void Update(float deltaTime) {}
 	virtual void Draw(Renderer2D* renderer) {}

@@ -57,6 +57,9 @@
     <ClCompile Include="CollisionDetection.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="PointCollider.cpp">
+      <Filter>Source Files\Colliders</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="PhysicsEngineApp.h">
@@ -85,6 +88,9 @@
     </ClInclude>
     <ClInclude Include="CollisionDetection.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="PointCollider.h">
+      <Filter>Header Files\Colliders</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

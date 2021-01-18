@@ -18,6 +18,8 @@ public:
 	bool SpawnObject(PhysicsObject* object);
 	bool DestroyObject(PhysicsObject* object);
 
+	void CheckCollisions();
+
 	virtual void Update(float deltaTime);
 	virtual void Draw(Renderer2D* renderer);
 
