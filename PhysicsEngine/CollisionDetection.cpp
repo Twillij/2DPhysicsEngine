@@ -4,41 +4,23 @@
 
 using namespace glm;
 
-Collision physics::Point2PointCollision(PointCollider* pointColliderA, PointCollider* pointColliderB)
+Collision physics::Line2LineCollision(LineCollider* lineA, LineCollider* lineB)
 {
-	Collision collision(pointColliderA, pointColliderB);
+	Collision collision(lineA, lineB);
 
-	if (pointColliderA && pointColliderB)
+	if (lineA && lineB)
 	{
-		// if the points are overlapping, then there is a collision
-		if (pointColliderA->point == pointColliderB->point)
-		{
-			collision.hasCollided = true;
-			collision.pointA = pointColliderA->point;
-			collision.pointB = collision.pointA;
-		}
-	}
-
-	return collision;
-}
-
-Collision physics::Line2LineCollision(LineCollider* lineColliderA, LineCollider* lineColliderB)
-{
-	Collision collision(lineColliderA, lineColliderB);
-
-	if (lineColliderA && lineColliderB)
-	{
-		vec2 pointA = lineColliderA->pointA;
-		vec2 pointB = lineColliderA->pointB;
-		vec2 pointC = lineColliderB->pointA;
-		vec2 pointD = lineColliderB->pointB;
+		vec2 pointA = lineA->pointA;
+		vec2 pointB = lineA->pointB;
+		vec2 pointC = lineB->pointA;
+		vec2 pointD = lineB->pointB;
 
 		// calculate the distance to the point of intersection
 		float div = ((pointD.y - pointC.y) * (pointB.x - pointA.x) - (pointD.x - pointC.x) * (pointB.y - pointA.y));
 		float uA = ((pointD.x - pointC.x) * (pointA.y - pointC.y) - (pointD.y - pointC.y) * (pointA.x - pointC.x)) / div;
 		float uB = ((pointB.x - pointA.x) * (pointA.y - pointC.y) - (pointB.y - pointA.y) * (pointA.x - pointC.x)) / div;
 
-		// if uA and uB is within 0-1, then there is a collision
+		// if uA and uB is within 0-1, then a collision occurs
 		if (uA >= 0 && uA <= 1 && uB >= 0 && uB <= 1)
 		{
 			collision.hasCollided = true;
@@ -51,13 +33,65 @@ Collision physics::Line2LineCollision(LineCollider* lineColliderA, LineCollider*
 	return collision;
 }
 
-Collision physics::Line2CircleCollision(LineCollider* lineCollider, CircleCollider* circCollider)
+Collision physics::Line2CircleCollision(LineCollider* line, CircleCollider* circle)
 {
-	Collision collision(lineCollider, circCollider);
+	Collision collision(line, circle);
 
-	if (lineCollider && circCollider)
+	if (line && circle)
 	{
-		float lineLength = lineCollider->GetLength();
+		float distA = distance(line->pointA, circle->centre);
+		float distB = distance(line->pointB, circle->centre);
+
+		// if either ends of the line are inside the circle, then a collision occurs
+		if (distA <= circle->radius || distB <= circle->radius)
+		{
+			collision.hasCollided = true;
+			return collision;
+		}
+
+		vec2 distVec = circle->centre - line->pointA;
+		vec2 lineVec = line->pointB - line->pointA;
+		float lineLength = line->GetLength();
+
+		// calculate the t that minimizes distance
+		float t = dot(distVec, lineVec) / (lineLength * lineLength);
+
+		// if the point is on the line segment
+		if (t > 0 && t < 1)
+		{
+			// find the closest point to the circle's center
+			vec2 closest(line->pointA.x + (t * lineVec.x), line->pointA.y + (t * lineVec.y));
+
+			// find the perpendicular distance from the line to the circle's center
+			float perpDist = distance(closest, circle->centre);
+
+			// if the distance is less than the radius, then a collision occurs
+			if (perpDist <= circle->radius)
+			{
+				collision.hasCollided = true;
+				collision.pointA = closest;
+				//collision.normal = line->GetNormal();
+				//collision.pointB = circle->centre + (collision.normal * circle->radius);
+				collision.depth = circle->radius - perpDist;
+			}
+		}
+	}
+
+	return collision;
+}
+
+Collision physics::Circle2CircleCollision(CircleCollider* circleA, CircleCollider* circleB)
+{
+	Collision collision(circleA, circleB);
+
+	if (circleA && circleB)
+	{
+		float dist = distance(circleA->centre, circleB->centre);
+
+		if (dist <= circleA->radius + circleB->radius)
+		{
+			collision.hasCollided = true;
+		}
 	}
 
 	return collision;

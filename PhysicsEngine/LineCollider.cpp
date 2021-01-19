@@ -8,17 +8,25 @@ LineCollider::LineCollider()
 	type = ColliderType::Line;
 }
 
-Collision LineCollider::CheckCollision(LineCollider* lineCollider)
+Collision LineCollider::CheckCollision(LineCollider* line)
 {
-	return physics::Line2LineCollision(this, lineCollider);
+	return physics::Line2LineCollision(this, line);
 }
 
-Collision LineCollider::CheckCollision(CircleCollider* circCollider)
+Collision LineCollider::CheckCollision(CircleCollider* circle)
 {
-	return physics::Line2CircleCollision(this, circCollider);
+	return physics::Line2CircleCollision(this, circle);
 }
 
 float LineCollider::GetLength()
 {
 	return distance(pointA, pointB);
+}
+
+vec2 LineCollider::GetNormal()
+{
+	float distX = pointB.x - pointA.x;
+	float distY = pointB.y - pointA.y;
+
+	return normalize(vec2(-distY, distX));
 }

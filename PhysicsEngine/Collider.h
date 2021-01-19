@@ -5,7 +5,6 @@ using namespace glm;
 
 class PhysicsObject;
 class Collision;
-class PointCollider;
 class LineCollider;
 class CircleCollider;
 class RectangleCollider;
@@ -30,11 +29,10 @@ public:
 	PhysicsObject* object = nullptr;
 
 	virtual Collision CheckCollision(Collider* other) = 0;
-	virtual Collision CheckCollision(PointCollider* pointCollider) = 0;
-	virtual Collision CheckCollision(LineCollider* lineCollider) = 0;
-	virtual Collision CheckCollision(CircleCollider* circCollider) = 0;
-	virtual Collision CheckCollision(RectangleCollider* rectCollider) = 0;
-	virtual Collision CheckCollision(PolygonCollider* polyCollider) = 0;
+	virtual Collision CheckCollision(LineCollider* line) = 0;
+	virtual Collision CheckCollision(CircleCollider* circle) = 0;
+	virtual Collision CheckCollision(RectangleCollider* rectangle) = 0;
+	virtual Collision CheckCollision(PolygonCollider* polygon) = 0;
 
 protected:
 	ColliderType type = ColliderType::None;
