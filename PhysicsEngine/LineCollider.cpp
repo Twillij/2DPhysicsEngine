@@ -1,5 +1,4 @@
 #include "LineCollider.h"
-#include "Collision.h"
 #include "CollisionDetection.h"
 #include <glm/geometric.hpp>
 
@@ -16,6 +15,11 @@ Collision LineCollider::CheckCollision(LineCollider* line)
 Collision LineCollider::CheckCollision(CircleCollider* circle)
 {
 	return physics::Line2CircleCollision(this, circle);
+}
+
+Collision LineCollider::CheckCollision(BoxCollider* box)
+{
+	return physics::Line2BoxCollision(this, box);
 }
 
 float LineCollider::GetLength()

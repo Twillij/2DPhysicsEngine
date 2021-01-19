@@ -1,5 +1,4 @@
 #include "CircleCollider.h"
-#include "Collision.h"
 #include "CollisionDetection.h"
 
 CircleCollider::CircleCollider()

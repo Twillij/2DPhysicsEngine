@@ -1,8 +1,10 @@
 #include "CollisionDetection.h"
 #include <glm/vec2.hpp>
 #include <glm/geometric.hpp>
+#include <vector>
 
 using namespace glm;
+using namespace std;
 
 Collision physics::Line2LineCollision(LineCollider* lineA, LineCollider* lineB)
 {
@@ -80,6 +82,42 @@ Collision physics::Line2CircleCollision(LineCollider* line, CircleCollider* circ
 	return collision;
 }
 
+Collision physics::Line2BoxCollision(LineCollider* line, BoxCollider* box)
+{
+	Collision collision(line, box);
+
+	if (line && box)
+	{
+		vec2* corners = box->GetBoxCorners();
+		vector<Collision> collisions;
+
+		LineCollider lineCollider[4];
+		lineCollider[0].pointA = corners[0];
+		lineCollider[0].pointB = corners[1];
+		lineCollider[1].pointA = corners[1];
+		lineCollider[1].pointB = corners[2];
+
+		
+		for (int i = 0; i < 4; ++i)
+		{
+			// create line colliders from the four corners of the box
+			int j = (i + 1 < 4) ? i + 1 : 0;
+			lineCollider[i].pointA = corners[i];
+			lineCollider[i].pointB = corners[j];
+
+			// check collision against each side of the box
+			Collision lineCollision = Line2LineCollision(line, &lineCollider[i]);
+
+			if (lineCollision.hasCollided)
+			{
+				collision.hasCollided = true;
+			}
+		}
+	}
+
+	return collision;
+}
+
 Collision physics::Circle2CircleCollision(CircleCollider* circleA, CircleCollider* circleB)
 {
 	Collision collision(circleA, circleB);
@@ -92,6 +130,30 @@ Collision physics::Circle2CircleCollision(CircleCollider* circleA, CircleCollide
 		{
 			collision.hasCollided = true;
 		}
+	}
+
+	return collision;
+}
+
+Collision physics::Circle2Box(CircleCollider* circle, BoxCollider* box)
+{
+	Collision collision(circle, box);
+
+	if (circle && box)
+	{
+
+	}
+
+	return collision;
+}
+
+Collision physics::Box2BoxCollision(BoxCollider* boxA, BoxCollider* boxB)
+{
+	Collision collision(boxA, boxB);
+
+	if (boxA && boxB)
+	{
+
 	}
 
 	return collision;
