@@ -8,10 +8,15 @@ CircleCollider::CircleCollider()
 
 Collision CircleCollider::CheckCollision(LineCollider* line)
 {
-	return physics::Line2CircleCollision(line, this);
+	return physics::LineToCircleCollision(line, this);
 }
 
 Collision CircleCollider::CheckCollision(CircleCollider* circle)
 {
-	return physics::Circle2CircleCollision(this, circle);
+	return physics::CircleToCircleCollision(this, circle);
+}
+
+Collision CircleCollider::CheckCollision(BoxCollider* box)
+{
+	return physics::CircleToBox(this, box);
 }

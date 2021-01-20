@@ -6,10 +6,10 @@
 
 namespace physics
 {
-	Collision Line2LineCollision(LineCollider* lineA, LineCollider* lineB);
-	Collision Line2CircleCollision(LineCollider* line, CircleCollider* circle);
-	Collision Line2BoxCollision(LineCollider* line, BoxCollider* box);
-	Collision Circle2CircleCollision(CircleCollider* circleA, CircleCollider* circleB);
-	Collision Circle2Box(CircleCollider* circle, BoxCollider* box);
-	Collision Box2BoxCollision(BoxCollider* boxA, BoxCollider* boxB);
+	Collision LineToLineCollision(LineCollider* lineA, LineCollider* lineB);
+	Collision LineToCircleCollision(LineCollider* line, CircleCollider* circle);
+	Collision LineToBoxCollision(LineCollider* line, BoxCollider* box);
+	Collision CircleToCircleCollision(CircleCollider* circleA, CircleCollider* circleB);
+	Collision CircleToBox(CircleCollider* circle, BoxCollider* box);
+	Collision BoxToBoxCollision(BoxCollider* boxA, BoxCollider* boxB);
 }

@@ -13,7 +13,6 @@ public:
 	Collision CheckCollision(LineCollider* line) override;
 	Collision CheckCollision(CircleCollider* circle) override;
 	Collision CheckCollision(BoxCollider* box) override;
-	//Collision CheckCollision(PolygonCollider* polyCollider) override;
 
 	float GetLength();
 	vec2 GetNormal();

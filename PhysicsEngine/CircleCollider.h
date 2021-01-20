@@ -12,6 +12,5 @@ public:
 
 	Collision CheckCollision(LineCollider* line) override;
 	Collision CheckCollision(CircleCollider* circle) override;
-	//Collision CheckCollision(RectangleCollider* other) override;
-	//Collision CheckCollision(PolygonCollider* other) override;
+	Collision CheckCollision(BoxCollider* box) override;
 };

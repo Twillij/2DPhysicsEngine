@@ -6,7 +6,7 @@
 using namespace glm;
 using namespace std;
 
-Collision physics::Line2LineCollision(LineCollider* lineA, LineCollider* lineB)
+Collision physics::LineToLineCollision(LineCollider* lineA, LineCollider* lineB)
 {
 	Collision collision(lineA, lineB);
 
@@ -35,7 +35,7 @@ Collision physics::Line2LineCollision(LineCollider* lineA, LineCollider* lineB)
 	return collision;
 }
 
-Collision physics::Line2CircleCollision(LineCollider* line, CircleCollider* circle)
+Collision physics::LineToCircleCollision(LineCollider* line, CircleCollider* circle)
 {
 	Collision collision(line, circle);
 
@@ -82,7 +82,7 @@ Collision physics::Line2CircleCollision(LineCollider* line, CircleCollider* circ
 	return collision;
 }
 
-Collision physics::Line2BoxCollision(LineCollider* line, BoxCollider* box)
+Collision physics::LineToBoxCollision(LineCollider* line, BoxCollider* box)
 {
 	Collision collision(line, box);
 
@@ -106,7 +106,7 @@ Collision physics::Line2BoxCollision(LineCollider* line, BoxCollider* box)
 			lineCollider[i].pointB = corners[j];
 
 			// check collision against each side of the box
-			Collision lineCollision = Line2LineCollision(line, &lineCollider[i]);
+			Collision lineCollision = LineToLineCollision(line, &lineCollider[i]);
 
 			if (lineCollision.hasCollided)
 			{
@@ -118,7 +118,7 @@ Collision physics::Line2BoxCollision(LineCollider* line, BoxCollider* box)
 	return collision;
 }
 
-Collision physics::Circle2CircleCollision(CircleCollider* circleA, CircleCollider* circleB)
+Collision physics::CircleToCircleCollision(CircleCollider* circleA, CircleCollider* circleB)
 {
 	Collision collision(circleA, circleB);
 
@@ -135,25 +135,65 @@ Collision physics::Circle2CircleCollision(CircleCollider* circleA, CircleCollide
 	return collision;
 }
 
-Collision physics::Circle2Box(CircleCollider* circle, BoxCollider* box)
+Collision physics::CircleToBox(CircleCollider* circle, BoxCollider* box)
 {
 	Collision collision(circle, box);
 
 	if (circle && box)
 	{
+		vec2 closest = circle->centre; // temp variable for the square's closest edges to the circle
 
+		float boxLeft = box->centre.x - box->extents.x;
+		float boxRight = box->centre.x + box->extents.x;
+		float boxTop = box->centre.y + box->centre.y;
+		float boxBot = box->centre.y - box->centre.y;
+
+		// check which edges of the box are closest to the circle
+
+		if (circle->centre.x < boxLeft)
+			closest.x = boxLeft;
+		else if (circle->centre.x > boxRight)
+			closest.x = boxRight;
+
+		if (circle->centre.y < boxBot)
+			closest.y = boxBot;
+		else if (circle->centre.y > boxTop)
+			closest.y = boxTop;
+
+		float dist = distance(closest, circle->centre);
+
+		if (dist <= circle->radius)
+		{
+			collision.hasCollided = true;
+		}
 	}
 
 	return collision;
 }
 
-Collision physics::Box2BoxCollision(BoxCollider* boxA, BoxCollider* boxB)
+Collision physics::BoxToBoxCollision(BoxCollider* boxA, BoxCollider* boxB)
 {
 	Collision collision(boxA, boxB);
 
 	if (boxA && boxB)
 	{
+		float boxALeft = boxA->centre.x - boxA->extents.x;
+		float boxARight = boxA->centre.x + boxA->extents.x;
+		float boxATop = boxA->centre.y + boxA->centre.y;
+		float boxABot = boxA->centre.y - boxA->centre.y;
 
+		float boxBLeft = boxB->centre.x - boxB->extents.x;
+		float boxBRight = boxB->centre.x + boxB->extents.x;
+		float boxBTop = boxB->centre.y + boxB->centre.y;
+		float boxBBot = boxB->centre.y - boxB->centre.y;
+
+		if (boxARight >= boxBLeft && // box A right edge past box B left edge
+			boxALeft <= boxBRight && // box A left edge past box B right edge
+			boxATop >= boxBBot && // box A top edge past box B bottom edge
+			boxABot <= boxBTop) // box A bottom edge past box B top edge
+		{
+			collision.hasCollided = true;
+		}
 	}
 
 	return collision;

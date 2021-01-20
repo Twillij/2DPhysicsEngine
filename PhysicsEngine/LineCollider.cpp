@@ -9,17 +9,17 @@ LineCollider::LineCollider()
 
 Collision LineCollider::CheckCollision(LineCollider* line)
 {
-	return physics::Line2LineCollision(this, line);
+	return physics::LineToLineCollision(this, line);
 }
 
 Collision LineCollider::CheckCollision(CircleCollider* circle)
 {
-	return physics::Line2CircleCollision(this, circle);
+	return physics::LineToCircleCollision(this, circle);
 }
 
 Collision LineCollider::CheckCollision(BoxCollider* box)
 {
-	return physics::Line2BoxCollision(this, box);
+	return physics::LineToBoxCollision(this, box);
 }
 
 float LineCollider::GetLength()

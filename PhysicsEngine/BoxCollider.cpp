@@ -8,12 +8,17 @@ BoxCollider::BoxCollider()
 
 Collision BoxCollider::CheckCollision(LineCollider* line)
 {
-	return physics::Line2BoxCollision(line, this);
+	return physics::LineToBoxCollision(line, this);
+}
+
+Collision BoxCollider::CheckCollision(CircleCollider* circle)
+{
+	return physics::CircleToBox(circle, this);
 }
 
 Collision BoxCollider::CheckCollision(BoxCollider* box)
 {
-	return physics::Box2BoxCollision(this, box);
+	return physics::BoxToBoxCollision(this, box);
 }
 
 vec2* BoxCollider::GetBoxCorners()
