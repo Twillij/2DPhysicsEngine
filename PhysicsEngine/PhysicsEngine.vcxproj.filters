@@ -60,6 +60,12 @@
     <ClCompile Include="BoxCollider.cpp">
       <Filter>Source Files\Colliders</Filter>
     </ClCompile>
+    <ClCompile Include="Box.cpp">
+      <Filter>Source Files\Objects</Filter>
+    </ClCompile>
+    <ClCompile Include="Line.cpp">
+      <Filter>Source Files\Objects</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="PhysicsEngineApp.h">
@@ -91,6 +97,12 @@
     </ClInclude>
     <ClInclude Include="BoxCollider.h">
       <Filter>Header Files\Colliders</Filter>
+    </ClInclude>
+    <ClInclude Include="Box.h">
+      <Filter>Header Files\Objects</Filter>
+    </ClInclude>
+    <ClInclude Include="Line.h">
+      <Filter>Header Files\Objects</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

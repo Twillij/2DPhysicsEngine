@@ -12,7 +12,7 @@ class PhysicsObject
 {
 public:
 	PhysicsObject() {}
-	virtual ~PhysicsObject() {}
+	virtual ~PhysicsObject();
 
 	vec2 position = vec2(0);
 	vec2 velocity = vec2(0);

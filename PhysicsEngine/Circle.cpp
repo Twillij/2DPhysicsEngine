@@ -3,15 +3,11 @@
 
 Circle::Circle()
 {
-	CircleCollider* defaultCollider = new CircleCollider();
-	defaultCollider->centre = position;
-	defaultCollider->radius = radius;
-	collider = defaultCollider;
-}
-
-Circle::~Circle()
-{
-	delete collider;
+	CircleCollider* circleCollider = new CircleCollider();
+	circleCollider->object = this;
+	circleCollider->centre = position;
+	circleCollider->radius = radius;
+	collider = circleCollider;
 }
 
 void Circle::Draw(Renderer2D* renderer)

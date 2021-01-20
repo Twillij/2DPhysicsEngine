@@ -2,6 +2,12 @@
 #include "Collider.h"
 #include "Collision.h"
 
+PhysicsObject::~PhysicsObject()
+{
+	if (collider)
+		delete collider;
+}
+
 void PhysicsObject::ApplyForce(vec2 force)
 {
 	velocity += force / mass;

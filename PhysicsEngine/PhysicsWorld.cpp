@@ -36,12 +36,11 @@ bool PhysicsWorld::DestroyObject(PhysicsObject* object)
 
 void PhysicsWorld::CheckCollisions()
 {
-	int objectCount = objects.size();
 	vector<Collision> collisions;
 
-	for (int i = 0; i < objectCount - 1; ++i)
+	for (int i = 0; i < objects.size() - 1; ++i)
 	{
-		for (int j = i + 1; j < objectCount; ++j)
+		for (int j = i + 1; j < objects.size(); ++j)
 		{
 			Collision collision = objects[i]->CheckCollision(objects[j]);
 

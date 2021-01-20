@@ -1,13 +1,12 @@
 #pragma once
 #include "PhysicsObject.h"
-
-class Circle : public PhysicsObject
+class Box : public PhysicsObject
 {
 public:
-	Circle();
-	~Circle() {}
+	Box();
+	~Box() {}
 
-	float radius = 10;
+	vec2 extents = vec2(0);
 
 	void Draw(Renderer2D* renderer) override;
 };
