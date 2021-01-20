@@ -5,7 +5,9 @@ class Circle : public PhysicsObject
 {
 public:
 	Circle();
-	~Circle() {}
+	~Circle();
 
-	
+	float radius = 10;
+
+	void Draw(Renderer2D* renderer) override;
 };
