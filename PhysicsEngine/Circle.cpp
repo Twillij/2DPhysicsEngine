@@ -1,5 +1,6 @@
 #include "Circle.h"
 #include "CircleCollider.h"
+#include <Gizmos.h>
 
 Circle::Circle(vec2 centre, float radius)
 {
@@ -15,5 +16,5 @@ Circle::Circle(vec2 centre, float radius)
 
 void Circle::Draw(Renderer2D* renderer)
 {
-	renderer->drawCircle(position.x, position.y, radius);
+	Gizmos::add2DCircle(position, radius, 12, vec4(1, 1, 1, 0));
 }

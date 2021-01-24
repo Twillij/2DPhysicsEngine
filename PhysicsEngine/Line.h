@@ -1,5 +1,7 @@
 #pragma once
 #include "PhysicsObject.h"
+#include <glm/vec4.hpp>
+
 class Line : public PhysicsObject
 {
 public:

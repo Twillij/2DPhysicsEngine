@@ -1,6 +1,8 @@
 #include "PhysicsWorld.h"
 #include "PhysicsObject.h"
 #include "Collision.h"
+#include <Gizmos.h>
+#include <glm/ext.hpp>
 
 PhysicsWorld::~PhysicsWorld()
 {
@@ -12,6 +14,7 @@ bool PhysicsWorld::SpawnObject(PhysicsObject* object)
 {
 	if (object)
 	{
+		object->SetWorld(this);
 		objects.push_back(object);
 		return true;
 	}
@@ -60,6 +63,11 @@ void PhysicsWorld::Update(float deltaTime)
 
 void PhysicsWorld::Draw(Renderer2D* renderer)
 {
+	Gizmos::clear();
+
 	for (int i = 0; i < objects.size(); ++i)
 		objects[i]->Draw(renderer);
+
+	static float aspectRatio = 16.0f / 9.0f;
+	Gizmos::draw2D(glm::ortho<float>(-100, 100, -100 / aspectRatio, 100 / aspectRatio, -1.0f, 1.0f));
 }

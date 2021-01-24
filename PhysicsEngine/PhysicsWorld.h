@@ -15,6 +15,8 @@ public:
 	PhysicsWorld() {}
 	virtual ~PhysicsWorld();
 
+	vec2 gravity = vec2(0.0f, -9.81f);
+
 	bool SpawnObject(PhysicsObject* object);
 	bool DestroyObject(PhysicsObject* object);
 
@@ -24,6 +26,5 @@ public:
 	virtual void Draw(Renderer2D* renderer);
 
 private:
-	vec2 gravity = vec2(0.0f, -9.81f);
 	vector<PhysicsObject*> objects;
 };

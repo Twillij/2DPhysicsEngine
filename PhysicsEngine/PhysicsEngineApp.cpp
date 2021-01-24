@@ -2,12 +2,21 @@
 #include "Texture.h"
 #include "Font.h"
 #include "Input.h"
+#include "Gizmos.h"
+#include "Box.h"
+#include "Circle.h"
+#include "Line.h"
 
 bool PhysicsEngineApp::startup()
 {
+	// increase the 2d line count to maximise the number of objects we can draw
+	Gizmos::create(255U, 255U, 65535U, 65535U);
+
 	world = new PhysicsWorld();
 	renderer = new Renderer2D();
 	font = new Font("./font/consolas.ttf", 32);
+
+	world->SpawnObject(new Circle());
 
 	return true;
 }

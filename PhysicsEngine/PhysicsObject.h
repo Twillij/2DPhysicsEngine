@@ -5,6 +5,7 @@
 using namespace aie;
 using namespace glm;
 
+class PhysicsWorld;
 class Collider;
 class Collision;
 
@@ -20,9 +21,15 @@ public:
 
 	Collider* collider = nullptr;
 
+	PhysicsWorld* GetWorld();
+	void SetWorld(PhysicsWorld* world);
+
 	void ApplyForce(vec2 force);
 	Collision CheckCollision(PhysicsObject* other);
 
-	virtual void Update(float deltaTime) {}
+	virtual void Update(float deltaTime);
 	virtual void Draw(Renderer2D* renderer) {}
+
+private:
+	PhysicsWorld* world = nullptr;
 };

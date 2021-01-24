@@ -1,5 +1,6 @@
 #include "Line.h"
 #include "LineCollider.h"
+#include <Gizmos.h>
 
 Line::Line(vec2 from, vec2 to)
 {
@@ -16,5 +17,5 @@ Line::Line(vec2 from, vec2 to)
 
 void Line::Draw(Renderer2D* renderer)
 {
-	renderer->drawLine(a.x, a.y, b.x, b.y);
+	Gizmos::add2DLine(a, b, vec4(1, 1, 1, 0));
 }

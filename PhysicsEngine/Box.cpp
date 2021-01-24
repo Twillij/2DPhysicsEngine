@@ -1,5 +1,6 @@
 #include "Box.h"
 #include "BoxCollider.h"
+#include <Gizmos.h>
 
 Box::Box(vec2 centre, vec2 extents)
 {
@@ -15,5 +16,5 @@ Box::Box(vec2 centre, vec2 extents)
 
 void Box::Draw(Renderer2D* renderer)
 {
-	renderer->drawBox(position.x, position.y, extents.x * 2, extents.y * 2);
+	Gizmos::add2DAABB(position, extents, vec4(1, 1, 1, 0));
 }
