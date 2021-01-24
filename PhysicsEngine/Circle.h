@@ -4,10 +4,10 @@
 class Circle : public PhysicsObject
 {
 public:
-	Circle();
+	Circle(vec2 centre = vec2(0), float radius = 10);
 	~Circle() {}
 
-	float radius = 10;
+	float radius;
 
 	void Draw(Renderer2D* renderer) override;
 };

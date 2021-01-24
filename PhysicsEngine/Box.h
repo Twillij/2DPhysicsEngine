@@ -3,10 +3,10 @@
 class Box : public PhysicsObject
 {
 public:
-	Box();
+	Box(vec2 centre = vec2(0), vec2 extents = vec2(5));
 	~Box() {}
 
-	vec2 extents = vec2(0);
+	vec2 extents;
 
 	void Draw(Renderer2D* renderer) override;
 };

@@ -1,8 +1,12 @@
 #include "Line.h"
 #include "LineCollider.h"
 
-Line::Line()
+Line::Line(vec2 from, vec2 to)
 {
+	a = from;
+	b = to;
+
+	// set collider
 	LineCollider* lineCollider = new LineCollider();
 	lineCollider->object = this;
 	lineCollider->a = a;

@@ -5,6 +5,7 @@ class LineCollider : public Collider
 {
 public:
 	LineCollider();
+	LineCollider(PhysicsObject* object);
 	~LineCollider() {}
 
 	vec2 a = vec2(0);

@@ -7,6 +7,11 @@ LineCollider::LineCollider()
 	type = ColliderType::Line;
 }
 
+LineCollider::LineCollider(PhysicsObject* object) : Collider(object)
+{
+	type = ColliderType::Line;
+}
+
 Collision LineCollider::CheckCollision(LineCollider* line)
 {
 	return physics::LineToLineCollision(this, line);

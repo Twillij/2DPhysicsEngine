@@ -5,6 +5,7 @@ class CircleCollider : public Collider
 {
 public:
 	CircleCollider();
+	CircleCollider(PhysicsObject* object);
 	~CircleCollider() {}
 
 	vec2 centre = vec2(0);

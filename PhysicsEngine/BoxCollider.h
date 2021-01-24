@@ -5,6 +5,7 @@ class BoxCollider : public Collider
 {
 public:
 	BoxCollider();
+	BoxCollider(PhysicsObject* object);
 	~BoxCollider() {}
 
 	vec2 centre = vec2(0);

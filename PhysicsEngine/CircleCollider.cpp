@@ -6,6 +6,11 @@ CircleCollider::CircleCollider()
 	type = ColliderType::Circle;
 }
 
+CircleCollider::CircleCollider(PhysicsObject* object) : Collider(object)
+{
+	type = ColliderType::Circle;
+}
+
 Collision CircleCollider::CheckCollision(LineCollider* line)
 {
 	return physics::LineToCircleCollision(line, this);

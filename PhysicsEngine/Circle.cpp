@@ -1,10 +1,13 @@
 #include "Circle.h"
 #include "CircleCollider.h"
 
-Circle::Circle()
+Circle::Circle(vec2 centre, float radius)
 {
-	CircleCollider* circleCollider = new CircleCollider();
-	circleCollider->object = this;
+	position = centre;
+	this->radius = radius;
+
+	// set collider
+	CircleCollider* circleCollider = new CircleCollider(this);
 	circleCollider->centre = position;
 	circleCollider->radius = radius;
 	collider = circleCollider;

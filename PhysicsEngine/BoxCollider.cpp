@@ -6,6 +6,11 @@ BoxCollider::BoxCollider()
 	type = ColliderType::Box;
 }
 
+BoxCollider::BoxCollider(PhysicsObject* object) : Collider(object)
+{
+	type = ColliderType::Box;
+}
+
 Collision BoxCollider::CheckCollision(LineCollider* line)
 {
 	return physics::LineToBoxCollision(line, this);

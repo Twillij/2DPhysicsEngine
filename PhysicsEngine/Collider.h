@@ -14,6 +14,7 @@ class Collider
 {
 public:
 	Collider() {}
+	Collider(PhysicsObject* object) : object(object) {}
 	virtual ~Collider() {}
 
 	enum class ColliderType

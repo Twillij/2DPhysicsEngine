@@ -1,10 +1,13 @@
 #include "Box.h"
 #include "BoxCollider.h"
 
-Box::Box()
+Box::Box(vec2 centre, vec2 extents)
 {
-	BoxCollider* boxCollider = new BoxCollider();
-	boxCollider->object = this;
+	position = centre;
+	this->extents = extents;
+
+	// set collider
+	BoxCollider* boxCollider = new BoxCollider(this);
 	boxCollider->centre = position;
 	boxCollider->extents = extents;
 	collider = boxCollider;
