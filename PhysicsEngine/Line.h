@@ -6,8 +6,8 @@ public:
 	Line();
 	~Line() {}
 
-	vec2 pointA = vec2(0);
-	vec2 pointB = vec2(0);
+	vec2 a = vec2(0);
+	vec2 b = vec2(0);
 
 	void Draw(Renderer2D* renderer) override;
 };

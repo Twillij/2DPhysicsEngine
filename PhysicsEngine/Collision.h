@@ -17,8 +17,8 @@ public:
 	PhysicsObject* objectB = nullptr;
 
 	bool hasCollided = false;
-	vec2 pointA = vec2(0);
-	vec2 pointB = vec2(0);
+	vec2 a = vec2(0);
+	vec2 b = vec2(0);
 	vec2 normal = vec2(0);
 	float depth = 0;
 	

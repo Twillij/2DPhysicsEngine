@@ -7,8 +7,8 @@ public:
 	LineCollider();
 	~LineCollider() {}
 
-	vec2 pointA = vec2(0);
-	vec2 pointB = vec2(0);
+	vec2 a = vec2(0);
+	vec2 b = vec2(0);
 
 	Collision CheckCollision(LineCollider* line) override;
 	Collision CheckCollision(CircleCollider* circle) override;

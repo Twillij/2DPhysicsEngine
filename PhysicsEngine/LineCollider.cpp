@@ -24,13 +24,13 @@ Collision LineCollider::CheckCollision(BoxCollider* box)
 
 float LineCollider::GetLength()
 {
-	return distance(pointA, pointB);
+	return distance(a, b);
 }
 
 vec2 LineCollider::GetNormal()
 {
-	float distX = pointB.x - pointA.x;
-	float distY = pointB.y - pointA.y;
+	float distX = b.x - a.x;
+	float distY = b.y - a.y;
 
 	return normalize(vec2(-distY, distX));
 }

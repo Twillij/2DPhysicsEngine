@@ -16,7 +16,7 @@ Collision::Collision(Collider* a, Collider* b)
 
 vec2 Collision::CalculateNormal(bool setValue)
 {
-	vec2 newNormal = normalize(pointB - pointA);
+	vec2 newNormal = normalize(b - a);
 	
 	if (setValue)
 		normal = newNormal;
@@ -26,7 +26,7 @@ vec2 Collision::CalculateNormal(bool setValue)
 
 float Collision::CalculateDepth(bool setValue)
 {
-	float dist = distance(pointA, pointB);
+	float dist = distance(a, b);
 
 	if (setValue)
 		depth = dist;

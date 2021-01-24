@@ -12,23 +12,23 @@ Collision physics::LineToLineCollision(LineCollider* lineA, LineCollider* lineB)
 
 	if (lineA && lineB)
 	{
-		vec2 pointA = lineA->pointA;
-		vec2 pointB = lineA->pointB;
-		vec2 pointC = lineB->pointA;
-		vec2 pointD = lineB->pointB;
+		vec2 a = lineA->a;
+		vec2 b = lineA->b;
+		vec2 pointC = lineB->a;
+		vec2 pointD = lineB->b;
 
 		// calculate the distance to the point of intersection
-		float div = ((pointD.y - pointC.y) * (pointB.x - pointA.x) - (pointD.x - pointC.x) * (pointB.y - pointA.y));
-		float uA = ((pointD.x - pointC.x) * (pointA.y - pointC.y) - (pointD.y - pointC.y) * (pointA.x - pointC.x)) / div;
-		float uB = ((pointB.x - pointA.x) * (pointA.y - pointC.y) - (pointB.y - pointA.y) * (pointA.x - pointC.x)) / div;
+		float div = ((pointD.y - pointC.y) * (b.x - a.x) - (pointD.x - pointC.x) * (b.y - a.y));
+		float uA = ((pointD.x - pointC.x) * (a.y - pointC.y) - (pointD.y - pointC.y) * (a.x - pointC.x)) / div;
+		float uB = ((b.x - a.x) * (a.y - pointC.y) - (b.y - a.y) * (a.x - pointC.x)) / div;
 
 		// if uA and uB is within 0-1, then a collision occurs
 		if (uA >= 0 && uA <= 1 && uB >= 0 && uB <= 1)
 		{
 			collision.hasCollided = true;
-			collision.pointA.x = pointA.x + (uA * (pointB.x - pointA.x));
-			collision.pointA.y = pointA.y + (uA * (pointB.y - pointB.y));
-			collision.pointB = collision.pointA;
+			collision.a.x = a.x + (uA * (b.x - a.x));
+			collision.a.y = a.y + (uA * (b.y - b.y));
+			collision.b = collision.a;
 		}
 	}
 
@@ -41,8 +41,8 @@ Collision physics::LineToCircleCollision(LineCollider* line, CircleCollider* cir
 
 	if (line && circle)
 	{
-		float distA = distance(line->pointA, circle->centre);
-		float distB = distance(line->pointB, circle->centre);
+		float distA = distance(line->a, circle->centre);
+		float distB = distance(line->b, circle->centre);
 
 		// if either ends of the line are inside the circle, then a collision occurs
 		if (distA <= circle->radius || distB <= circle->radius)
@@ -51,8 +51,8 @@ Collision physics::LineToCircleCollision(LineCollider* line, CircleCollider* cir
 			return collision;
 		}
 
-		vec2 distVec = circle->centre - line->pointA;
-		vec2 lineVec = line->pointB - line->pointA;
+		vec2 distVec = circle->centre - line->a;
+		vec2 lineVec = line->b - line->a;
 		float lineLength = line->GetLength();
 
 		// calculate the t that minimizes distance
@@ -62,7 +62,7 @@ Collision physics::LineToCircleCollision(LineCollider* line, CircleCollider* cir
 		if (t > 0 && t < 1)
 		{
 			// find the closest point to the circle's center
-			vec2 closest(line->pointA.x + (t * lineVec.x), line->pointA.y + (t * lineVec.y));
+			vec2 closest(line->a.x + (t * lineVec.x), line->a.y + (t * lineVec.y));
 
 			// find the perpendicular distance from the line to the circle's center
 			float perpDist = distance(closest, circle->centre);
@@ -71,7 +71,7 @@ Collision physics::LineToCircleCollision(LineCollider* line, CircleCollider* cir
 			if (perpDist <= circle->radius)
 			{
 				collision.hasCollided = true;
-				collision.pointA = closest;
+				collision.a = closest;
 				//collision.normal = line->GetNormal();
 				//collision.pointB = circle->centre + (collision.normal * circle->radius);
 				collision.depth = circle->radius - perpDist;
@@ -92,18 +92,18 @@ Collision physics::LineToBoxCollision(LineCollider* line, BoxCollider* box)
 		vector<Collision> collisions;
 
 		LineCollider lineCollider[4];
-		lineCollider[0].pointA = corners[0];
-		lineCollider[0].pointB = corners[1];
-		lineCollider[1].pointA = corners[1];
-		lineCollider[1].pointB = corners[2];
+		lineCollider[0].a = corners[0];
+		lineCollider[0].b = corners[1];
+		lineCollider[1].a = corners[1];
+		lineCollider[1].b = corners[2];
 
 		
 		for (int i = 0; i < 4; ++i)
 		{
 			// create line colliders from the four corners of the box
 			int j = (i + 1 < 4) ? i + 1 : 0;
-			lineCollider[i].pointA = corners[i];
-			lineCollider[i].pointB = corners[j];
+			lineCollider[i].a = corners[i];
+			lineCollider[i].b = corners[j];
 
 			// check collision against each side of the box
 			Collision lineCollision = LineToLineCollision(line, &lineCollider[i]);
