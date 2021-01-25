@@ -119,11 +119,20 @@ Collision physics::CircleToCircleCollision(CircleCollider* circleA, CircleCollid
 	if (circleA && circleB)
 	{
 		float dist = distance(circleA->centre, circleB->centre);
+		float rSum = circleA->radius + circleB->radius;
 
-		if (dist <= circleA->radius + circleB->radius)
+		// if the circle is in the same position
+		if (dist)
 		{
 			collision.hasCollided = true;
-			collision.penetration = circleA->radius + circleB->radius - dist;
+			collision.penetration = circleA->radius;
+			collision.normal = vec2(1, 0);
+		}
+		// if the circle is colliding but not in the same position
+		else if (dist <= circleA->radius + circleB->radius)
+		{	
+			collision.hasCollided = true;
+			collision.penetration = rSum - dist;
 			collision.normal = (circleB->centre - circleA->centre) / dist;
 		}
 	}
@@ -173,22 +182,38 @@ Collision physics::BoxToBoxCollision(BoxCollider* boxA, BoxCollider* boxB)
 
 	if (boxA && boxB)
 	{
-		float boxALeft = boxA->centre.x - boxA->extents.x;
-		float boxARight = boxA->centre.x + boxA->extents.x;
-		float boxATop = boxA->centre.y + boxA->centre.y;
-		float boxABot = boxA->centre.y - boxA->centre.y;
+		// calculate the distance vector from A to B
+		vec2 distVec = boxB->centre - boxA->centre;
 
-		float boxBLeft = boxB->centre.x - boxB->extents.x;
-		float boxBRight = boxB->centre.x + boxB->extents.x;
-		float boxBTop = boxB->centre.y + boxB->centre.y;
-		float boxBBot = boxB->centre.y - boxB->centre.y;
+		// calculate the overlap on the x axis
+		float overlapX = boxA->extents.x + boxB->extents.x - abs(distVec.x);
 
-		if (boxARight >= boxBLeft && // box A right edge past box B left edge
-			boxALeft <= boxBRight && // box A left edge past box B right edge
-			boxATop >= boxBBot && // box A top edge past box B bottom edge
-			boxABot <= boxBTop) // box A bottom edge past box B top edge
+		// SAT test on x axis
+		if (overlapX > 0)
 		{
+			// at this point a collision would have already occured
 			collision.hasCollided = true;
+
+			// calculate the overlap on the y axis
+			float overlapY = boxA->extents.y + boxB->extents.y - abs(distVec.y);
+
+			// SAT test on y axis
+			if (overlapY > 0)
+			{
+				// determine which axis has the least penetration
+				if (overlapX > overlapY)
+				{
+					// point towards B knowing that the distance vector points from A to B
+					collision.normal = (distVec.x < 0) ? vec2(-1, 0) : vec2(1, 0);
+					collision.penetration = overlapX;
+				}
+				else
+				{
+					// point towards B knowing that the distance vector points from A to B
+					collision.normal = (distVec.y < 0) ? vec2(0, -1) : vec2(0, 1);
+					collision.penetration = overlapY;
+				}
+			}
 		}
 	}
 
