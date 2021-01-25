@@ -8,6 +8,7 @@ using namespace glm;
 using namespace std;
 
 class PhysicsObject;
+class Collision;
 
 class PhysicsWorld
 {
@@ -21,6 +22,7 @@ public:
 	bool DestroyObject(PhysicsObject* object);
 
 	void CheckCollisions();
+	void ResolveCollision(Collision collision);
 
 	virtual void Update(float deltaTime);
 	virtual void Draw(Renderer2D* renderer);

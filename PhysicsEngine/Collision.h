@@ -17,11 +17,6 @@ public:
 	PhysicsObject* objectB = nullptr;
 
 	bool hasCollided = false;
-	vec2 a = vec2(0);
-	vec2 b = vec2(0);
+	float penetration = 0;
 	vec2 normal = vec2(0);
-	float depth = 0;
-	
-	vec2 CalculateNormal(bool setValue = true);
-	float CalculateDepth(bool setValue = true);
 };

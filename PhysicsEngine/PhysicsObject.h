@@ -17,12 +17,16 @@ public:
 
 	vec2 position = vec2(0);
 	vec2 velocity = vec2(0);
-	float mass = 0;
+	float restitution = 1;
 
 	Collider* collider = nullptr;
 
 	PhysicsWorld* GetWorld();
 	void SetWorld(PhysicsWorld* world);
+
+	float GetMass();
+	float GetInverseMass();
+	void SetMass(float mass);
 
 	void ApplyForce(vec2 force);
 	Collision CheckCollision(PhysicsObject* other);
@@ -31,5 +35,6 @@ public:
 	virtual void Draw(Renderer2D* renderer) {}
 
 private:
+	float mass = 0;
 	PhysicsWorld* world = nullptr;
 };

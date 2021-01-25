@@ -26,9 +26,6 @@ Collision physics::LineToLineCollision(LineCollider* lineA, LineCollider* lineB)
 		if (uA >= 0 && uA <= 1 && uB >= 0 && uB <= 1)
 		{
 			collision.hasCollided = true;
-			collision.a.x = a.x + (uA * (b.x - a.x));
-			collision.a.y = a.y + (uA * (b.y - b.y));
-			collision.b = collision.a;
 		}
 	}
 
@@ -61,7 +58,7 @@ Collision physics::LineToCircleCollision(LineCollider* line, CircleCollider* cir
 		// if the point is on the line segment
 		if (t > 0 && t < 1)
 		{
-			// find the closest point to the circle's center
+			// find the closest point on the line to the circle's center
 			vec2 closest(line->a.x + (t * lineVec.x), line->a.y + (t * lineVec.y));
 
 			// find the perpendicular distance from the line to the circle's center
@@ -71,10 +68,7 @@ Collision physics::LineToCircleCollision(LineCollider* line, CircleCollider* cir
 			if (perpDist <= circle->radius)
 			{
 				collision.hasCollided = true;
-				collision.a = closest;
-				//collision.normal = line->GetNormal();
-				//collision.pointB = circle->centre + (collision.normal * circle->radius);
-				collision.depth = circle->radius - perpDist;
+				collision.penetration = circle->radius - perpDist;
 			}
 		}
 	}
@@ -129,6 +123,8 @@ Collision physics::CircleToCircleCollision(CircleCollider* circleA, CircleCollid
 		if (dist <= circleA->radius + circleB->radius)
 		{
 			collision.hasCollided = true;
+			collision.penetration = circleA->radius + circleB->radius - dist;
+			collision.normal = (circleB->centre - circleA->centre) / dist;
 		}
 	}
 
