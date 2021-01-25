@@ -146,31 +146,50 @@ Collision physics::CircleToBox(CircleCollider* circle, BoxCollider* box)
 
 	if (circle && box)
 	{
-		vec2 closest = circle->centre; // temp variable for the square's closest edges to the circle
+		// calculate the distance vector from box to circle
+		vec2 distVec = circle->centre - box->centre;
 
-		float boxLeft = box->centre.x - box->extents.x;
-		float boxRight = box->centre.x + box->extents.x;
-		float boxTop = box->centre.y + box->centre.y;
-		float boxBot = box->centre.y - box->centre.y;
+		// closest point on box to centre of circle
+		vec2 closest = distVec;
 
-		// check which edges of the box are closest to the circle
+		// clamp point to edges of the box
+		closest.x = clamp(closest.x, -box->extents.x, box->extents.x);
+		closest.y = clamp(closest.y, -box->extents.y, box->extents.y);
 
-		if (circle->centre.x < boxLeft)
-			closest.x = boxLeft;
-		else if (circle->centre.x > boxRight)
-			closest.x = boxRight;
+		bool inside = false;
 
-		if (circle->centre.y < boxBot)
-			closest.y = boxBot;
-		else if (circle->centre.y > boxTop)
-			closest.y = boxTop;
-
-		float dist = distance(closest, circle->centre);
-
-		if (dist <= circle->radius)
+		if (distVec == closest)
 		{
-			collision.hasCollided = true;
+			// if the closest point has not been clamped, then the circle is inside the box
+			inside = true;
+
+			// find the closest axis
+			if (abs(distVec.x) > abs(distVec.y))
+			{
+				// clamp to closest extent in that axis
+				closest.x = (closest.x > 0) ? box->extents.x : -box->extents.x;
+			}
+			else
+			{
+				// clamp to closest extent in that axis
+				closest.y = (closest.y > 0) ? box->extents.y : -box->extents.y;
+			}
 		}
+		
+		vec2 normal = distVec - closest;
+		float normalLength = length(normal);
+
+		// early out if the radius is shorter than the distance to the closest point
+		// and circle is not inside box
+		if (normalLength > circle->radius && !inside)
+			return collision;
+
+		// at this point collision is confirmed
+		collision.hasCollided = true;
+		
+		// collision normal needs to be flipped to point outside if circle is inside box
+		collision.normal = (inside) ? -distVec : distVec;
+		collision.penetration = circle->radius - normalLength;
 	}
 
 	return collision;
