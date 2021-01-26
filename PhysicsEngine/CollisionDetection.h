@@ -1,15 +1,15 @@
 #pragma once
 #include "Collision.h"
-#include "LineCollider.h"
-#include "CircleCollider.h"
-#include "BoxCollider.h"
+#include "Line.h"
+#include "Circle.h"
+#include "Box.h"
 
 namespace physics
 {
-	Collision LineToLineCollision(LineCollider* lineA, LineCollider* lineB);
-	Collision LineToCircleCollision(LineCollider* line, CircleCollider* circle);
-	Collision LineToBoxCollision(LineCollider* line, BoxCollider* box);
-	Collision CircleToCircleCollision(CircleCollider* circleA, CircleCollider* circleB);
-	Collision CircleToBox(CircleCollider* circle, BoxCollider* box);
-	Collision BoxToBoxCollision(BoxCollider* boxA, BoxCollider* boxB);
+	Collision LineToLine(Line* lineA, Line* lineB);
+	Collision LineToCircle(Line* line, Circle* circle);
+	Collision LineToBox(Line* line, Box* box);
+	Collision CircleToCircle(Circle* circleA, Circle* circleB);
+	Collision CircleToBox(Circle* circle, Box* box);
+	Collision BoxToBox(Box* boxA, Box* boxB);
 }

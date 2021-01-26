@@ -10,7 +10,6 @@ class Collision
 {
 public:
 	Collision(PhysicsObject* a, PhysicsObject* b);
-	Collision(Collider* a, Collider* b);
 	~Collision() {}
 
 	PhysicsObject* objectA = nullptr;

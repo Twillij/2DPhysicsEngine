@@ -11,5 +11,12 @@ public:
 	vec2 a;
 	vec2 b;
 
+	float GetLength();
+	vec2 GetNormal();
+
+	Collision CheckCollision(Line* line) override;
+	Collision CheckCollision(Circle* circle) override;
+	Collision CheckCollision(Box* box) override;
+
 	void Draw(Renderer2D* renderer) override;
 };

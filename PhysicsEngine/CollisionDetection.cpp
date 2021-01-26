@@ -6,7 +6,7 @@
 using namespace glm;
 using namespace std;
 
-Collision physics::LineToLineCollision(LineCollider* lineA, LineCollider* lineB)
+Collision physics::LineToLine(Line* lineA, Line* lineB)
 {
 	Collision collision(lineA, lineB);
 
@@ -32,14 +32,14 @@ Collision physics::LineToLineCollision(LineCollider* lineA, LineCollider* lineB)
 	return collision;
 }
 
-Collision physics::LineToCircleCollision(LineCollider* line, CircleCollider* circle)
+Collision physics::LineToCircle(Line* line, Circle* circle)
 {
 	Collision collision(line, circle);
 
 	if (line && circle)
 	{
-		float distA = distance(line->a, circle->centre);
-		float distB = distance(line->b, circle->centre);
+		float distA = distance(line->a, circle->position);
+		float distB = distance(line->b, circle->position);
 
 		// if either ends of the line are inside the circle, then a collision occurs
 		if (distA <= circle->radius || distB <= circle->radius)
@@ -48,7 +48,7 @@ Collision physics::LineToCircleCollision(LineCollider* line, CircleCollider* cir
 			return collision;
 		}
 
-		vec2 distVec = circle->centre - line->a;
+		vec2 distVec = circle->position -line->a;
 		vec2 lineVec = line->b - line->a;
 		float lineLength = line->GetLength();
 
@@ -62,7 +62,7 @@ Collision physics::LineToCircleCollision(LineCollider* line, CircleCollider* cir
 			vec2 closest(line->a.x + (t * lineVec.x), line->a.y + (t * lineVec.y));
 
 			// find the perpendicular distance from the line to the circle's center
-			float perpDist = distance(closest, circle->centre);
+			float perpDist = distance(closest, circle->position);
 
 			// if the distance is less than the radius, then a collision occurs
 			if (perpDist <= circle->radius)
@@ -76,7 +76,7 @@ Collision physics::LineToCircleCollision(LineCollider* line, CircleCollider* cir
 	return collision;
 }
 
-Collision physics::LineToBoxCollision(LineCollider* line, BoxCollider* box)
+Collision physics::LineToBox(Line* line, Box* box)
 {
 	Collision collision(line, box);
 
@@ -85,22 +85,22 @@ Collision physics::LineToBoxCollision(LineCollider* line, BoxCollider* box)
 		vec2* corners = box->GetBoxCorners();
 		vector<Collision> collisions;
 
-		LineCollider lineCollider[4];
-		lineCollider[0].a = corners[0];
-		lineCollider[0].b = corners[1];
-		lineCollider[1].a = corners[1];
-		lineCollider[1].b = corners[2];
+		Line lines[4];
+		lines[0].a = corners[0];
+		lines[0].b = corners[1];
+		lines[1].a = corners[1];
+		lines[1].b = corners[2];
 
-		
+
 		for (int i = 0; i < 4; ++i)
 		{
 			// create line colliders from the four corners of the box
 			int j = (i + 1 < 4) ? i + 1 : 0;
-			lineCollider[i].a = corners[i];
-			lineCollider[i].b = corners[j];
+			lines[i].a = corners[i];
+			lines[i].b = corners[j];
 
 			// check collision against each side of the box
-			Collision lineCollision = LineToLineCollision(line, &lineCollider[i]);
+			Collision lineCollision = LineToLine(line, &lines[i]);
 
 			if (lineCollision.hasCollided)
 			{
@@ -112,13 +112,13 @@ Collision physics::LineToBoxCollision(LineCollider* line, BoxCollider* box)
 	return collision;
 }
 
-Collision physics::CircleToCircleCollision(CircleCollider* circleA, CircleCollider* circleB)
+Collision physics::CircleToCircle(Circle* circleA, Circle* circleB)
 {
 	Collision collision(circleA, circleB);
 
 	if (circleA && circleB)
 	{
-		float dist = distance(circleA->centre, circleB->centre);
+		float dist = distance(circleA->position, circleB->position);
 		float rSum = circleA->radius + circleB->radius;
 
 		// if the circle is in the same position
@@ -130,26 +130,26 @@ Collision physics::CircleToCircleCollision(CircleCollider* circleA, CircleCollid
 		}
 		// if the circle is colliding but not in the same position
 		else if (dist <= circleA->radius + circleB->radius)
-		{	
+		{
 			collision.hasCollided = true;
 			collision.penetration = rSum - dist;
-			collision.normal = (circleB->centre - circleA->centre) / dist;
+			collision.normal = (circleB->position - circleA->position) / dist;
 		}
 	}
 
 	return collision;
 }
 
-Collision physics::CircleToBox(CircleCollider* circle, BoxCollider* box)
+Collision physics::CircleToBox(Circle* circle, Box* box)
 {
 	Collision collision(circle, box);
 
 	if (circle && box)
 	{
 		// calculate the distance vector from box to circle
-		vec2 distVec = circle->centre - box->centre;
+		vec2 distVec = circle->position - box->position;
 
-		// closest point on box to centre of circle
+		// closest point on box to position of circle
 		vec2 closest = distVec;
 
 		// clamp point to edges of the box
@@ -175,7 +175,7 @@ Collision physics::CircleToBox(CircleCollider* circle, BoxCollider* box)
 				closest.y = (closest.y > 0) ? box->extents.y : -box->extents.y;
 			}
 		}
-		
+
 		vec2 normal = distVec - closest;
 		float normalLength = length(normal);
 
@@ -186,7 +186,7 @@ Collision physics::CircleToBox(CircleCollider* circle, BoxCollider* box)
 
 		// at this point collision is confirmed
 		collision.hasCollided = true;
-		
+
 		// collision normal needs to be flipped to point outside if circle is inside box
 		collision.normal = (inside) ? -distVec : distVec;
 		collision.penetration = circle->radius - normalLength;
@@ -195,14 +195,14 @@ Collision physics::CircleToBox(CircleCollider* circle, BoxCollider* box)
 	return collision;
 }
 
-Collision physics::BoxToBoxCollision(BoxCollider* boxA, BoxCollider* boxB)
+Collision physics::BoxToBox(Box* boxA, Box* boxB)
 {
 	Collision collision(boxA, boxB);
 
 	if (boxA && boxB)
 	{
 		// calculate the distance vector from A to B
-		vec2 distVec = boxB->centre - boxA->centre;
+		vec2 distVec = boxB->position - boxA->position;
 
 		// calculate the overlap on the x axis
 		float overlapX = boxA->extents.x + boxB->extents.x - abs(distVec.x);

@@ -1,13 +1,7 @@
 #include "PhysicsObject.h"
 #include "PhysicsWorld.h"
-#include "Collider.h"
 #include "Collision.h"
-
-PhysicsObject::~PhysicsObject()
-{
-	if (collider)
-		delete collider;
-}
+#include <iostream>
 
 PhysicsWorld* PhysicsObject::GetWorld()
 {
@@ -34,24 +28,20 @@ void PhysicsObject::SetMass(float mass)
 	this->mass = (mass >= 0) ? mass : 0;
 }
 
-void PhysicsObject::ApplyForce(vec2 force)
+void PhysicsObject::ApplyForce(vec2 force, float deltaTime)
 {
-	velocity += force / mass;
+	velocity += force * GetInverseMass() * deltaTime; cout << "velocity:" << velocity.x << "," << velocity.y << endl;
+	position += velocity * deltaTime;
 }
 
 Collision PhysicsObject::CheckCollision(PhysicsObject* other)
 {
-	if (collider && other)
-	{
-		return collider->CheckCollision(other->collider);
-	}
-
 	return Collision(this, other);
 }
 
 void PhysicsObject::Update(float deltaTime)
 {
-	velocity += world->gravity * deltaTime;
+	vec2 force = world->gravity;
 
-	position += velocity;
+	ApplyForce(force, deltaTime);
 }

@@ -1,17 +1,38 @@
 #include "Box.h"
-#include "BoxCollider.h"
+#include "CollisionDetection.h"
 #include <Gizmos.h>
 
-Box::Box(vec2 centre, vec2 extents)
+Box::Box(vec2 position, vec2 extents)
 {
-	position = centre;
+	position = position;
 	this->extents = extents;
+}
 
-	// set collider
-	BoxCollider* boxCollider = new BoxCollider(this);
-	boxCollider->centre = position;
-	boxCollider->extents = extents;
-	collider = boxCollider;
+vec2* Box::GetBoxCorners()
+{
+	vec2 corners[4];
+
+	corners[0] = vec2(position.x + extents.x, position.y + extents.y);
+	corners[1] = vec2(position.x + extents.x, position.y - extents.y);
+	corners[2] = vec2(position.x - extents.x, position.y - extents.y);
+	corners[3] = vec2(position.x - extents.x, position.y + extents.y);
+
+	return &corners[0];
+}
+
+Collision Box::CheckCollision(Line* line)
+{
+	return physics::LineToBox(line, this);
+}
+
+Collision Box::CheckCollision(Circle* circle)
+{
+	return physics::CircleToBox(circle, this);
+}
+
+Collision Box::CheckCollision(Box* box)
+{
+	return physics::BoxToBox(this, box);
 }
 
 void Box::Draw(Renderer2D* renderer)
