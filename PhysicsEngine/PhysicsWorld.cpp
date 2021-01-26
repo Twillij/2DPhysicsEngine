@@ -59,6 +59,7 @@ void PhysicsWorld::ResolveCollision(Collision collision)
 	PhysicsObject* b = collision.objectB;
 	float inverseMassA = a->GetInverseMass();
 	float inverseMassB = b->GetInverseMass();
+	float inverseMassSum = inverseMassA + inverseMassB;
 
 	// calculate relative velocity
 	vec2 rv = b->velocity - a->velocity;
@@ -74,17 +75,46 @@ void PhysicsWorld::ResolveCollision(Collision collision)
 	float e = std::min(a->restitution, b->restitution);
 
 	// calculate impulse magnitude
-	float m = -(1 + e) * velAlongNormal / (inverseMassA + inverseMassB);
+	float mag = -(1 + e) * velAlongNormal / (inverseMassSum);
 
 	// apply impulse
-	vec2 impulse = m * collision.normal;
+	vec2 impulse = mag * collision.normal;
 	a->velocity -= inverseMassA * impulse;
 	b->velocity += inverseMassB * impulse;
+
+	// recalculate relative velocity after impulse is applied
+	rv = b->velocity - a->velocity;
+
+	// calculate the tangent vector aka friction vector
+	vec2 friction = normalize(rv - collision.normal * velAlongNormal);
+
+	// calculate the magnitude to apply along the friction vector
+	float frictionMag = -dot(rv, friction) / (inverseMassSum);
+
+	// approximate the constant in coulomb's law using the static friction of each object
+	float coulomb = sqrtf(a->staticFriction * a->staticFriction + b->staticFriction * b->staticFriction);
+
+	// clamp magnitude of friction and create impulse vector
+	vec2 frictionImpulse;
+
+	if (abs(frictionMag) < mag * coulomb)
+	{
+		frictionImpulse = frictionMag * friction;
+	}
+	else
+	{
+		float kineticFriction = sqrtf(a->kineticFriction * a->kineticFriction + b->kineticFriction * b->kineticFriction);
+		frictionImpulse = -frictionMag * friction * kineticFriction;
+	}
+
+	// Apply friction impulse
+	a->velocity -= inverseMassA * frictionImpulse;
+	b->velocity += inverseMassB * frictionImpulse;
 
 	// apply positional correction
 	float percent = 0.2f;
 	float buffer = 0.01f;
-	vec2 correction = std::max(collision.penetration - buffer, 0.0f) / (inverseMassA + inverseMassB) * percent * collision.normal;
+	vec2 correction = std::max(collision.penetration - buffer, 0.0f) / (inverseMassSum) * percent * collision.normal;
 	a->position -= inverseMassA * correction;
 	b->position += inverseMassA * correction;
 }

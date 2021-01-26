@@ -19,7 +19,9 @@ public:
 
 	vec2 position = vec2(0);
 	vec2 velocity = vec2(0);
-	float restitution = 1;
+	float restitution = 0.5f;
+	float staticFriction = 0.5f;
+	float kineticFriction = 0.1f;
 
 	PhysicsWorld* GetWorld();
 	void SetWorld(PhysicsWorld* world);
