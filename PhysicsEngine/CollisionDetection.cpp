@@ -188,7 +188,7 @@ Collision physics::CircleToBox(Circle* circle, Box* box)
 		collision.hasCollided = true;
 
 		// collision normal needs to be flipped to point outside if circle is inside box
-		collision.normal = (inside) ? -distVec : distVec;
+		collision.normal = (inside) ? -normalize(normal) : -normalize(normal);
 		collision.penetration = circle->radius - normalLength;
 	}
 
