@@ -14,6 +14,7 @@ public:
 	float GetLength();
 	vec2 GetNormal();
 
+	Collision CheckCollision(PhysicsObject* other) override;
 	Collision CheckCollision(Line* line) override;
 	Collision CheckCollision(Circle* circle) override;
 	Collision CheckCollision(Box* box) override;

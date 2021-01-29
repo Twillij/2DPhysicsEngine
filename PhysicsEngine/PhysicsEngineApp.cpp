@@ -16,6 +16,9 @@ bool PhysicsEngineApp::startup()
 	renderer = new Renderer2D();
 	font = new Font("./font/consolas.ttf", 32);
 
+	Box* platform = new Box(vec2(0, -40), vec2(50, 2));
+	platform->SetMass(0);
+	world->SpawnObject(platform);
 	world->SpawnObject(new Circle());
 
 	return true;

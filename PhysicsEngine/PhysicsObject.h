@@ -35,7 +35,7 @@ public:
 	virtual void Update(float deltaTime);
 	virtual void Draw(Renderer2D* renderer) {}
 
-	virtual Collision CheckCollision(PhysicsObject* other);
+	virtual Collision CheckCollision(PhysicsObject* other) = 0;
 	virtual Collision CheckCollision(Line* line) = 0;
 	virtual Collision CheckCollision(Circle* circle) = 0;
 	virtual Collision CheckCollision(Box* box) = 0;

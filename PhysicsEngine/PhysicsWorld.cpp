@@ -51,6 +51,12 @@ void PhysicsWorld::CheckCollisions()
 				collisions.push_back(collision);
 		}
 	}
+
+	for (int i = 0; i < collisions.size(); ++i)
+	{
+		if (collisions[i].hasCollided)
+			ResolveCollision(collisions[i]);
+	}
 }
 
 void PhysicsWorld::ResolveCollision(Collision collision)

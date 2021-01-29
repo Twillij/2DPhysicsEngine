@@ -1,10 +1,11 @@
 #include "Box.h"
 #include "CollisionDetection.h"
 #include <Gizmos.h>
+#include <iostream>
 
 Box::Box(vec2 position, vec2 extents)
 {
-	position = position;
+	this->position = position;
 	this->extents = extents;
 }
 
@@ -18,6 +19,11 @@ vec2* Box::GetBoxCorners()
 	corners[3] = vec2(position.x - extents.x, position.y + extents.y);
 
 	return &corners[0];
+}
+
+Collision Box::CheckCollision(PhysicsObject* other)
+{
+	return other->CheckCollision(this);
 }
 
 Collision Box::CheckCollision(Line* line)
@@ -37,5 +43,5 @@ Collision Box::CheckCollision(Box* box)
 
 void Box::Draw(Renderer2D* renderer)
 {
-	Gizmos::add2DAABB(position, extents, vec4(1, 1, 1, 0));
+	Gizmos::add2DAABB(position, extents, vec4(1, 1, 1, 1));
 }

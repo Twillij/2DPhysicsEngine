@@ -30,13 +30,8 @@ void PhysicsObject::SetMass(float mass)
 
 void PhysicsObject::ApplyForce(vec2 force, float deltaTime)
 {
-	velocity += force * GetInverseMass() * deltaTime; cout << "velocity:" << velocity.x << "," << velocity.y << endl;
+	velocity += force * GetInverseMass() * deltaTime; //cout << "velocity:" << velocity.x << "," << velocity.y << endl;
 	position += velocity * deltaTime;
-}
-
-Collision PhysicsObject::CheckCollision(PhysicsObject* other)
-{
-	return Collision(this, other);
 }
 
 void PhysicsObject::Update(float deltaTime)

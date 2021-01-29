@@ -22,6 +22,11 @@ vec2 Line::GetNormal()
 	return normalize(vec2(-distY, distX));
 }
 
+Collision Line::CheckCollision(PhysicsObject* other)
+{
+	return other->CheckCollision(this);
+}
+
 Collision Line::CheckCollision(Line* line)
 {
 	return physics::LineToLine(this, line);

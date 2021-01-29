@@ -13,6 +13,11 @@ void Circle::Draw(Renderer2D* renderer)
 	Gizmos::add2DCircle(position, radius, 12, vec4(1, 1, 1, 0));
 }
 
+Collision Circle::CheckCollision(PhysicsObject* other)
+{
+	return other->CheckCollision(this);
+}
+
 Collision Circle::CheckCollision(Line* line)
 {
 	return physics::LineToCircle(line, this);
