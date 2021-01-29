@@ -6,6 +6,7 @@
 #include "Box.h"
 #include "Circle.h"
 #include "Line.h"
+#include <iostream>
 
 bool PhysicsEngineApp::startup()
 {
@@ -19,7 +20,9 @@ bool PhysicsEngineApp::startup()
 	Box* platform = new Box(vec2(0, -40), vec2(50, 2));
 	platform->SetMass(0);
 	world->SpawnObject(platform);
-	world->SpawnObject(new Circle());
+	//world->SpawnObject(new Circle());
+	//world->SpawnObject(new Circle());
+	world->SpawnObject(new Box());
 
 	return true;
 }
@@ -37,6 +40,14 @@ void PhysicsEngineApp::update(float deltaTime)
 	Input* input = Input::getInstance();
 
 	world->Update(deltaTime);
+
+	if (input->wasMouseButtonPressed(0))
+	{
+		float mouseX = input->getMouseX() - 640;
+		float mouseY = input->getMouseY() - 360;
+		std::cout << "mouse clicked: " << mouseX << ", " << mouseY << std::endl;
+		world->SpawnObject(new Circle(vec2(mouseX, mouseY)));
+	}
 
 	// exit the application
 	if (input->isKeyDown(INPUT_KEY_ESCAPE))
