@@ -23,6 +23,11 @@ public:
 	float staticFriction = 0.5f;
 	float kineticFriction = 0.1f;
 
+	float rotation = 0;
+	float angularVelocity = 0;
+	float torque = 0;
+	float moment = 0;
+
 	PhysicsWorld* GetWorld();
 	void SetWorld(PhysicsWorld* world);
 

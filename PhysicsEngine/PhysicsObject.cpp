@@ -31,7 +31,9 @@ void PhysicsObject::SetMass(float mass)
 void PhysicsObject::ApplyForce(vec2 force, float deltaTime)
 {
 	velocity += force * GetInverseMass() * deltaTime; //cout << "velocity:" << velocity.x << "," << velocity.y << endl;
+	angularVelocity += torque * (1 / moment) * deltaTime;
 	position += velocity * deltaTime;
+	rotation += angularVelocity * deltaTime;
 }
 
 void PhysicsObject::Update(float deltaTime)
