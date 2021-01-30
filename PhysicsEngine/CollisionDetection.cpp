@@ -122,7 +122,7 @@ Collision physics::CircleToCircle(Circle* circleA, Circle* circleB)
 		float rSum = circleA->radius + circleB->radius;
 
 		// if the circle is in the same position
-		if (dist)
+		if (dist == 0.0f)
 		{
 			collision.hasCollided = true;
 			collision.penetration = circleA->radius;
@@ -188,7 +188,7 @@ Collision physics::CircleToBox(Circle* circle, Box* box)
 		collision.hasCollided = true;
 
 		// collision normal needs to be flipped to point outside if circle is inside box
-		collision.normal = (inside) ? -normalize(normal) : -normalize(normal);
+		collision.normal = (inside) ? normalize(normal) : -normalize(normal);
 		collision.penetration = circle->radius - normalLength;
 	}
 

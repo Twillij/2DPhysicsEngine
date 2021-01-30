@@ -20,9 +20,6 @@ bool PhysicsEngineApp::startup()
 	Box* platform = new Box(vec2(0, -40), vec2(50, 2));
 	platform->SetMass(0);
 	world->SpawnObject(platform);
-	//world->SpawnObject(new Circle());
-	//world->SpawnObject(new Circle());
-	world->SpawnObject(new Box(vec2(-100, 56.25f)));
 
 	return true;
 }
@@ -47,6 +44,14 @@ void PhysicsEngineApp::update(float deltaTime)
 		float mouseY = (input->getMouseY() - 360) / (360 / 100 * 16 / 9);
 		std::cout << "mouse clicked: " << mouseX << ", " << mouseY << std::endl;
 		world->SpawnObject(new Box(vec2(mouseX, mouseY)));
+	}
+
+	if (input->wasMouseButtonPressed(1))
+	{
+		float mouseX = (input->getMouseX() - 640) / (640 / 100);
+		float mouseY = (input->getMouseY() - 360) / (360 / 100 * 16 / 9);
+		std::cout << "mouse clicked: " << mouseX << ", " << mouseY << std::endl;
+		world->SpawnObject(new Circle(vec2(mouseX, mouseY)));
 	}
 
 	// exit the application

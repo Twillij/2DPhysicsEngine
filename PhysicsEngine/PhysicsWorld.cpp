@@ -114,8 +114,8 @@ void PhysicsWorld::ResolveCollision(Collision collision)
 	}
 
 	// Apply friction impulse
-	a->velocity -= inverseMassA * frictionImpulse;
-	b->velocity += inverseMassB * frictionImpulse;
+	//a->velocity -= inverseMassA * frictionImpulse;
+	//b->velocity += inverseMassB * frictionImpulse;
 
 	// apply positional correction
 	float percent = 0.2f;
