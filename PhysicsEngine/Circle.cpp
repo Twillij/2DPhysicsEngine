@@ -4,7 +4,7 @@
 
 Circle::Circle(vec2 centre, float radius)
 {
-	position = centre;
+	this->position = centre;
 	this->radius = radius;
 }
 

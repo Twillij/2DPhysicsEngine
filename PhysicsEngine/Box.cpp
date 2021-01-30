@@ -3,9 +3,9 @@
 #include <Gizmos.h>
 #include <iostream>
 
-Box::Box(vec2 position, vec2 extents)
+Box::Box(vec2 centre, vec2 extents)
 {
-	this->position = position;
+	this->position = centre;
 	this->extents = extents;
 }
 

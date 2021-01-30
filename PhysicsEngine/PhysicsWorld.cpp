@@ -122,7 +122,7 @@ void PhysicsWorld::ResolveCollision(Collision collision)
 	float buffer = 0.01f;
 	vec2 correction = std::max(collision.penetration - buffer, 0.0f) / (inverseMassSum) * percent * collision.normal;
 	a->position -= inverseMassA * correction;
-	b->position += inverseMassA * correction;
+	b->position += inverseMassB * correction;
 }
 
 void PhysicsWorld::Update(float deltaTime)
