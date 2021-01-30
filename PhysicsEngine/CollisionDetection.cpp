@@ -210,17 +210,17 @@ Collision physics::BoxToBox(Box* boxA, Box* boxB)
 		// SAT test on x axis
 		if (overlapX > 0)
 		{
-			// at this point a collision would have already occured
-			collision.hasCollided = true;
-
 			// calculate the overlap on the y axis
 			float overlapY = boxA->extents.y + boxB->extents.y - abs(distVec.y);
 
 			// SAT test on y axis
 			if (overlapY > 0)
 			{
+				// at this point a collision would have already occured
+				collision.hasCollided = true;
+
 				// determine which axis has the least penetration
-				if (overlapX > overlapY)
+				if (overlapX < overlapY)
 				{
 					// point towards B knowing that the distance vector points from A to B
 					collision.normal = (distVec.x < 0) ? vec2(-1, 0) : vec2(1, 0);
