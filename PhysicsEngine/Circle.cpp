@@ -39,5 +39,5 @@ Collision Circle::CheckCollision(Box* box)
 
 void Circle::SetMoment()
 {
-	moment = mass * radius * radius / 2; std::cout << "moment: " << moment << std::endl;
+	moment = mass * radius * radius / 2;
 }

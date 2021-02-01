@@ -136,9 +136,9 @@ Collision physics::CircleToCircle(Circle* circleA, Circle* circleB)
 		{
 			collision.hasCollided = true;
 			collision.penetration = rSum - dist;
-			collision.normal = (circleB->position - circleA->position) / dist;
-			collision.contactA = circleA->position + collision.normal * circleA->radius;
-			collision.contactB = circleB->position - collision.normal * circleB->radius;
+			collision.normal = (circleB->position - circleA->position) / dist; //std::cout << "normal: " << collision.normal.x << ", " << collision.normal.y << std::endl;
+			collision.contactA = circleA->position + (collision.normal * circleA->radius); //std::cout << "contactA: " << collision.contactA.x << ", " << collision.contactA.y << std::endl;
+			collision.contactB = circleB->position - (collision.normal * circleB->radius); //std::cout << "contactB: " << collision.contactB.x << ", " << collision.contactB.y << std::endl;
 		}
 	}
 
