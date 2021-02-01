@@ -5,12 +5,13 @@
 class Box : public PhysicsObject
 {
 public:
-	Box(vec2 centre = vec2(0), vec2 extents = vec2(5));
+	Box(vec2 centre = vec2(0), vec2 extents = vec2(5), float mass = 1);
 	~Box() {}
 
 	vec2 extents;
 
-	vec2* GetBoxCorners();
+	float GetWidth();
+	float GetHeight();
 
 	Collision CheckCollision(PhysicsObject* other) override;
 	Collision CheckCollision(Line* line) override;
@@ -18,4 +19,7 @@ public:
 	Collision CheckCollision(Box* box) override;
 
 	void Draw(Renderer2D* renderer) override;
+
+protected:
+	void SetMoment() override;
 };

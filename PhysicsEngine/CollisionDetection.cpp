@@ -82,25 +82,25 @@ Collision physics::LineToBox(Line* line, Box* box)
 
 	if (line && box)
 	{
-		vec2* corners = box->GetBoxCorners();
 		vector<Collision> collisions;
 
-		Line lines[4];
-		lines[0].a = corners[0];
-		lines[0].b = corners[1];
-		lines[1].a = corners[1];
-		lines[1].b = corners[2];
-
+		vec2 corners[4];
+		corners[0] = vec2(box->position.x + box->extents.x, box->position.y + box->extents.y);
+		corners[1] = vec2(box->position.x + box->extents.x, box->position.y - box->extents.y);
+		corners[2] = vec2(box->position.x - box->extents.x, box->position.y - box->extents.y);
+		corners[3] = vec2(box->position.x - box->extents.x, box->position.y + box->extents.y);
 
 		for (int i = 0; i < 4; ++i)
 		{
+			Line boxEdge;
+
 			// create line colliders from the four corners of the box
 			int j = (i + 1 < 4) ? i + 1 : 0;
-			lines[i].a = corners[i];
-			lines[i].b = corners[j];
+			boxEdge.a = corners[i];
+			boxEdge.b = corners[j];
 
 			// check collision against each side of the box
-			Collision lineCollision = LineToLine(line, &lines[i]);
+			Collision lineCollision = LineToLine(line, &boxEdge);
 
 			if (lineCollision.hasCollided)
 			{
@@ -127,6 +127,8 @@ Collision physics::CircleToCircle(Circle* circleA, Circle* circleB)
 			collision.hasCollided = true;
 			collision.penetration = circleA->radius;
 			collision.normal = vec2(1, 0);
+			collision.contactA = circleA->position;
+			collision.contactB = circleB->position;
 		}
 		// if the circle is colliding but not in the same position
 		else if (dist <= circleA->radius + circleB->radius)
@@ -134,6 +136,8 @@ Collision physics::CircleToCircle(Circle* circleA, Circle* circleB)
 			collision.hasCollided = true;
 			collision.penetration = rSum - dist;
 			collision.normal = (circleB->position - circleA->position) / dist;
+			collision.contactA = circleA->position + collision.normal * circleA->radius;
+			collision.contactB = circleB->position - collision.normal * circleB->radius;
 		}
 	}
 

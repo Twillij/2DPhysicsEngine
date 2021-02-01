@@ -5,10 +5,10 @@
 class Circle : public PhysicsObject
 {
 public:
-	Circle(vec2 centre = vec2(0), float radius = 5);
+	Circle(vec2 centre = vec2(0), float radius = 5, float mass = 1);
 	~Circle() {}
 
-	float radius;
+	float radius = 5;
 
 	Collision CheckCollision(PhysicsObject* other) override;
 	Collision CheckCollision(Line* line) override;
@@ -16,4 +16,7 @@ public:
 	Collision CheckCollision(Box* box) override;
 
 	void Draw(Renderer2D* renderer) override;
+
+protected:
+	void SetMoment() override;
 };

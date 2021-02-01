@@ -25,17 +25,17 @@ public:
 
 	float rotation = 0;
 	float angularVelocity = 0;
-	float torque = 0;
-	float moment = 0;
 
 	PhysicsWorld* GetWorld();
 	void SetWorld(PhysicsWorld* world);
 
 	float GetMass();
-	float GetInverseMass();
 	void SetMass(float mass);
 
-	void ApplyForce(vec2 force, float deltaTime);
+	float GetInverseMass();
+	float GetInverseMoment();
+
+	void ApplyForce(vec2 force, vec2 contact);
 
 	virtual void Update(float deltaTime);
 	virtual void Draw(Renderer2D* renderer) {}
@@ -45,7 +45,12 @@ public:
 	virtual Collision CheckCollision(Circle* circle) = 0;
 	virtual Collision CheckCollision(Box* box) = 0;
 
-private:
+protected:
 	float mass = 1;
+	float moment = 0;
+
+	virtual void SetMoment() {}
+
+private:
 	PhysicsWorld* world = nullptr;
 };

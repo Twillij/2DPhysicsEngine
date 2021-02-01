@@ -5,7 +5,7 @@
 class Line : public PhysicsObject
 {
 public:
-	Line(vec2 from = vec2(0), vec2 to = vec2(0));
+	Line(vec2 from = vec2(0), vec2 to = vec2(0), float mass = 0);
 	~Line() {}
 
 	vec2 a;
@@ -20,4 +20,7 @@ public:
 	Collision CheckCollision(Box* box) override;
 
 	void Draw(Renderer2D* renderer) override;
+
+protected:
+	void SetMoment() override {}
 };

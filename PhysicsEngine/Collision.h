@@ -16,6 +16,8 @@ public:
 	PhysicsObject* objectB = nullptr;
 
 	bool hasCollided = false;
+	vec2 contactA = vec2(0);
+	vec2 contactB = vec2(0);
 	float penetration = 0;
 	vec2 normal = vec2(0);
 };

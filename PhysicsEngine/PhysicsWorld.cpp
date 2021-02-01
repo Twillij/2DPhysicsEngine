@@ -85,8 +85,8 @@ void PhysicsWorld::ResolveCollision(Collision collision)
 
 	// apply impulse
 	vec2 impulse = mag * collision.normal;
-	a->velocity -= inverseMassA * impulse;
-	b->velocity += inverseMassB * impulse;
+	a->ApplyForce(-impulse, collision.contactA - a->position);
+	b->ApplyForce(impulse, collision.contactB - b->position);
 
 	// recalculate relative velocity after impulse is applied
 	rv = b->velocity - a->velocity;

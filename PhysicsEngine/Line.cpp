@@ -3,10 +3,11 @@
 #include <Gizmos.h>
 #include <glm/geometric.hpp>
 
-Line::Line(vec2 from, vec2 to)
+Line::Line(vec2 from, vec2 to, float mass)
 {
 	a = from;
 	b = to;
+	SetMass(mass);
 }
 
 float Line::GetLength()

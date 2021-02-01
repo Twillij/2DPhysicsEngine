@@ -18,27 +18,34 @@ float PhysicsObject::GetMass()
 	return mass;
 }
 
-float PhysicsObject::GetInverseMass()
-{
-	return (mass) ? 1 / mass : 0;
-}
-
 void PhysicsObject::SetMass(float mass)
 {
 	this->mass = (mass >= 0) ? mass : 0;
+	this->SetMoment();
 }
 
-void PhysicsObject::ApplyForce(vec2 force, float deltaTime)
+float PhysicsObject::GetInverseMass()
 {
-	velocity += force * GetInverseMass() * deltaTime; //cout << "velocity:" << velocity.x << "," << velocity.y << endl;
-	angularVelocity += torque * (1 / moment) * deltaTime;
-	position += velocity * deltaTime;
-	rotation += angularVelocity * deltaTime;
+	return (mass > 0) ? 1 / mass : 0; 
+}
+
+float PhysicsObject::GetInverseMoment()
+{
+	return (moment > 0) ? 1 / moment : 0;
+}
+
+void PhysicsObject::ApplyForce(vec2 force, vec2 contact)
+{
+	velocity += force * GetInverseMass();
+
+	float torque = force.y * contact.x - force.x * contact.y; //std::cout << "torque: " << torque << std::endl;
+	angularVelocity += torque * GetInverseMoment(); //std::cout << "angular velocity: " << angularVelocity << std::endl;
 }
 
 void PhysicsObject::Update(float deltaTime)
 {
-	vec2 force = world->gravity;
+	ApplyForce(world->gravity, vec2(0));
 
-	ApplyForce(force, deltaTime);
+	position += velocity * deltaTime * deltaTime;
+	rotation += angularVelocity * deltaTime * deltaTime; //std::cout << "rotation: " << rotation << std::endl;
 }

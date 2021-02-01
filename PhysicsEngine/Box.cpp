@@ -3,22 +3,21 @@
 #include <Gizmos.h>
 #include <iostream>
 
-Box::Box(vec2 centre, vec2 extents)
+Box::Box(vec2 centre, vec2 extents, float mass)
 {
 	this->position = centre;
 	this->extents = extents;
+	SetMass(mass);
 }
 
-vec2* Box::GetBoxCorners()
+float Box::GetWidth()
 {
-	vec2 corners[4];
+	return extents.x * 2;
+}
 
-	corners[0] = vec2(position.x + extents.x, position.y + extents.y);
-	corners[1] = vec2(position.x + extents.x, position.y - extents.y);
-	corners[2] = vec2(position.x - extents.x, position.y - extents.y);
-	corners[3] = vec2(position.x - extents.x, position.y + extents.y);
-
-	return &corners[0];
+float Box::GetHeight()
+{
+	return extents.y * 2;
 }
 
 Collision Box::CheckCollision(PhysicsObject* other)
@@ -39,6 +38,11 @@ Collision Box::CheckCollision(Circle* circle)
 Collision Box::CheckCollision(Box* box)
 {
 	return physics::BoxToBox(this, box);
+}
+
+void Box::SetMoment()
+{
+	moment = mass * GetWidth() * GetHeight() / 12;
 }
 
 void Box::Draw(Renderer2D* renderer)
