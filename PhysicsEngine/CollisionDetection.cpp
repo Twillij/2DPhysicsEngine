@@ -1,6 +1,7 @@
 #include "CollisionDetection.h"
 #include <glm/vec2.hpp>
 #include <glm/geometric.hpp>
+#include <iostream>
 #include <vector>
 
 using namespace glm;
@@ -194,6 +195,8 @@ Collision physics::CircleToBox(Circle* circle, Box* box)
 		// collision normal needs to be flipped to point outside if circle is inside box
 		collision.normal = (inside) ? normalize(normal) : -normalize(normal);
 		collision.penetration = circle->radius - normalLength;
+		collision.contactA = circle->position + collision.normal * circle->radius;
+		collision.contactB = box->position + closest;
 	}
 
 	return collision;

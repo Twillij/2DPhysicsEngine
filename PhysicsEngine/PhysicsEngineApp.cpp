@@ -42,7 +42,7 @@ void PhysicsEngineApp::update(float deltaTime)
 	{
 		float mouseX = (input->getMouseX() - 640) / (640 / 100);
 		float mouseY = (input->getMouseY() - 360) / (360 / 100 * 16 / 9);
-		std::cout << "mouse clicked: " << mouseX << ", " << mouseY << std::endl;
+		//std::cout << "mouse clicked: " << mouseX << ", " << mouseY << std::endl;
 		world->SpawnObject(new Box(vec2(mouseX, mouseY)));
 	}
 
@@ -50,7 +50,7 @@ void PhysicsEngineApp::update(float deltaTime)
 	{
 		float mouseX = (input->getMouseX() - 640) / (640 / 100);
 		float mouseY = (input->getMouseY() - 360) / (360 / 100 * 16 / 9);
-		std::cout << "mouse clicked: " << mouseX << ", " << mouseY << std::endl;
+		//std::cout << "mouse clicked: " << mouseX << ", " << mouseY << std::endl;
 		world->SpawnObject(new Circle(vec2(mouseX, mouseY)));
 	}
 
