@@ -83,6 +83,20 @@ void PhysicsWorld::ResolveCollision(Collision collision)
 	// calculate impulse magnitude
 	float mag = -(1 + e) * velAlongNormal / (inverseMassSum);
 
+	//vec2 perp(collision.normal.y, -collision.normal.x);
+	//float radiusA = dot(collision.contactA - a->position, -perp);
+	//float radiusB = dot(collision.contactB - b->position, perp);
+	//float velocityA = dot(a->velocity, collision.normal) - radiusA * a->angularVelocity;
+	//float velocityB = dot(b->velocity, collision.normal) + radiusA * b->angularVelocity;
+
+	//if (velocityA > velocityB)
+	//{
+	//	float massA = 1 / (a->GetInverseMass() + radiusA * radiusA * a->GetInverseMoment());
+	//	float massB = 1 / (b->GetInverseMass() + radiusB * radiusB * a->GetInverseMoment());
+
+	//	mag = (1 + e) * massA * massB / (massA + massB) * (velocityA - velocityB);
+	//}
+
 	// apply impulse
 	vec2 impulse = mag * collision.normal;
 	a->ApplyForce(-impulse, collision.contactA - a->position);
