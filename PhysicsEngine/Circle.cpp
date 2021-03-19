@@ -12,7 +12,7 @@ Circle::Circle(vec2 centre, float radius, float mass)
 
 void Circle::Draw(Renderer2D* renderer)
 {
-	vec2 line = vec2(cosf(rotation), sinf(rotation)) * radius;
+	vec2 line = vec2(sinf(rotation), cosf(rotation)) * radius;
 	Gizmos::add2DCircle(position, radius, 12, vec4(1, 1, 1, 0));
 	Gizmos::add2DLine(position, position + line, vec4(1, 1, 1, 1));
 }
