@@ -42,7 +42,9 @@ Collision Box::CheckCollision(Box* box)
 
 void Box::SetMoment()
 {
-	moment = mass * GetWidth() * GetHeight() / 12;
+	float width = GetWidth();
+	float height = GetHeight();
+	moment = mass * (width * width + height * height) / 12;
 }
 
 void Box::Draw(Renderer2D* renderer)

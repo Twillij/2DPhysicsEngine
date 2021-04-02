@@ -77,25 +77,28 @@ void PhysicsWorld::ResolveCollision(Collision collision)
 {
 	PhysicsObject* a = collision.objectA;
 	PhysicsObject* b = collision.objectB;
-	float inverseMassA = a->GetInverseMass();
-	float inverseMassB = b->GetInverseMass();
-	float inverseMassSum = inverseMassA + inverseMassB;
+	float ima = a->GetInverseMass();
+	float imb = b->GetInverseMass();
+	float imSum = ima + imb;
+	vec2 ra = collision.contactA - a->position;
+	vec2 rb = collision.contactB - b->position;
 
 	// calculate relative velocity
-	vec2 rv = b->velocity - a->velocity;
+	vec2 rv = b->velocity + vec2(-b->angularVelocity * rb.y, b->angularVelocity * rb.x)
+			- a->velocity - vec2(-a->angularVelocity * ra.y, a->angularVelocity * ra.x);
 
 	// calculate relative velocity in terms of the normal direction
-	float velAlongNormal = dot(rv, collision.normal);
+	float contactVel = dot(rv, collision.normal);
 
 	// do not resolve if velocities are separating
-	if (velAlongNormal > 0)
+	if (contactVel > 0)
 		return;
 
 	// calculate restitution
 	float e = std::min(a->restitution, b->restitution);
 
 	// calculate impulse magnitude
-	float mag = -(1 + e) * velAlongNormal / (inverseMassSum);
+	float m = -(1 + e) * contactVel / (imSum);
 
 	//vec2 perp(collision.normal.y, -collision.normal.x);
 	//float radiusA = dot(collision.contactA - a->position, -perp);
@@ -112,55 +115,66 @@ void PhysicsWorld::ResolveCollision(Collision collision)
 	//}
 
 	// apply impulse
-	vec2 impulse = mag * collision.normal;
-	a->ApplyForce(-impulse, collision.contactA - a->position);
-	b->ApplyForce(impulse, collision.contactB - b->position);
+	vec2 impulse = m * collision.normal;
+	a->ApplyForce(-impulse + gravity, ra);
+	b->ApplyForce(impulse - gravity, rb);
 
 	// recalculate relative velocity after impulse is applied
-	rv = b->velocity - a->velocity;
+	rv = b->velocity + vec2(-b->angularVelocity * rb.y, b->angularVelocity * rb.x)
+		- a->velocity - vec2(-a->angularVelocity * ra.y, a->angularVelocity * ra.x);
+
+	// recalculate relative velocity in terms of the normal direction
+	contactVel = dot(rv, collision.normal);
 
 	// calculate the tangent vector aka friction vector
-	vec2 friction = normalize(rv - collision.normal * velAlongNormal);
+	vec2 fv = normalize(rv - collision.normal * contactVel);
 
 	// calculate the magnitude to apply along the friction vector
-	float frictionMag = -dot(rv, friction) / (inverseMassSum);
+	float fm = -dot(rv, fv) / (imSum);
 
-	// approximate the constant in coulomb's law using the static friction of each object
-	float coulomb = sqrtf(a->staticFriction * a->staticFriction + b->staticFriction * b->staticFriction);
-
-	// clamp magnitude of friction and create impulse vector
-	vec2 frictionImpulse;
-
-	if (abs(frictionMag) < mag * coulomb)
+	float fBuffer = 0.01f;
+	if (abs(fm) > fBuffer)
 	{
-		frictionImpulse = frictionMag * friction;
-	}
-	else
-	{
-		float kineticFriction = sqrtf(a->kineticFriction * a->kineticFriction + b->kineticFriction * b->kineticFriction);
-		frictionImpulse = -frictionMag * friction * kineticFriction;
-	}
+		vec2 fImpulse;
 
-	// Apply friction impulse
-	//a->velocity -= inverseMassA * frictionImpulse;
-	//b->velocity += inverseMassB * frictionImpulse;
+		// approximate the constant in coulomb's law using the static friction of each object
+		float c = sqrtf(a->staticFriction * a->staticFriction + b->staticFriction * b->staticFriction);
+
+		// clamp magnitude of friction and create impulse vector
+		if (abs(fm) < m * c)
+		{
+			fImpulse = fv * fm;
+		}
+		else
+		{
+			c = sqrtf(a->kineticFriction * a->kineticFriction + b->kineticFriction * b->kineticFriction);
+			fImpulse = fv * -m * c;
+		}
+
+		// Apply friction impulse
+		//a->ApplyForce(-fImpulse, ra);
+		//a->ApplyForce(-fImpulse, rb);
+	}
 
 	// apply positional correction
 	float percent = 0.2f;
 	float buffer = 0.01f;
-	vec2 correction = std::max(collision.penetration - buffer, 0.0f) / (inverseMassSum) * percent * collision.normal;
-	a->position -= inverseMassA * correction;
-	b->position += inverseMassB * correction;
+	vec2 correction = std::max(collision.penetration - buffer, 0.0f) / (imSum) * percent * collision.normal;
+	a->position -= ima * correction;
+	b->position += imb * correction;
 }
 
 void PhysicsWorld::Update(float deltaTime)
 {
-	for (int i = 0; i < objects.size(); ++i)
-		objects[i]->Update(deltaTime);
-
 	DestroyOffboundObjects(vec2(-100, -56.25f), vec2(100, 56.25f), 10);
 
 	CheckCollisions();
+
+	for (int i = 0; i < objects.size(); ++i)
+	{
+		objects[i]->ApplyForce(gravity, vec2(0));
+		objects[i]->Update(deltaTime);
+	}	
 }
 
 void PhysicsWorld::Draw(Renderer2D* renderer)

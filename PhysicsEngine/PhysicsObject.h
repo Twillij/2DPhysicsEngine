@@ -17,14 +17,17 @@ public:
 	PhysicsObject() {}
 	virtual ~PhysicsObject() {}
 
+	// dynamically changing variables
 	vec2 position = vec2(0);
 	vec2 velocity = vec2(0);
+	vec2 force = vec2(0);
+	float rotation = 0;
+	float angularVelocity = 0;
+
+	// pseudo 'constant' variables
 	float restitution = 0.5f;
 	float staticFriction = 0.5f;
 	float kineticFriction = 0.1f;
-
-	float rotation = 0;
-	float angularVelocity = 0;
 
 	PhysicsWorld* GetWorld();
 	void SetWorld(PhysicsWorld* world);
