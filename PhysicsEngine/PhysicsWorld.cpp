@@ -37,6 +37,20 @@ bool PhysicsWorld::DestroyObject(PhysicsObject* object)
 	return false;
 }
 
+void PhysicsWorld::DestroyOffboundObjects(vec2 lowerBounds, vec2 upperBounds, float margin)
+{
+	for (int i = 0; i < objects.size(); ++i)
+	{
+		if (objects[i]->position.x < lowerBounds.x - margin ||
+			objects[i]->position.x > upperBounds.x + margin ||
+			objects[i]->position.y < lowerBounds.y - margin ||
+			objects[i]->position.y > upperBounds.y + margin)
+		{
+			DestroyObject(objects[i]);
+		}
+	}
+}
+
 void PhysicsWorld::CheckCollisions()
 {
 	vector<Collision> collisions;
@@ -143,6 +157,8 @@ void PhysicsWorld::Update(float deltaTime)
 {
 	for (int i = 0; i < objects.size(); ++i)
 		objects[i]->Update(deltaTime);
+
+	DestroyOffboundObjects(vec2(-100, -56.25f), vec2(100, 56.25f), 10);
 
 	CheckCollisions();
 }

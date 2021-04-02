@@ -20,6 +20,7 @@ public:
 
 	bool SpawnObject(PhysicsObject* object);
 	bool DestroyObject(PhysicsObject* object);
+	void DestroyOffboundObjects(vec2 lowerBounds, vec2 upperBounds, float margin = 0);
 
 	void CheckCollisions();
 	void ResolveCollision(Collision collision);

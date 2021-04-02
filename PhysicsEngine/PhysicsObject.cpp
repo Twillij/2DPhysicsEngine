@@ -38,8 +38,8 @@ void PhysicsObject::ApplyForce(vec2 force, vec2 contact)
 {
 	velocity += force * GetInverseMass();
 
-	float torque = force.y * contact.x - force.x * contact.y; //std::cout << "torque: " << torque << std::endl; std::cout << "im: " << GetInverseMoment() << std::endl;
-	angularVelocity += torque * GetInverseMoment();//std::cout << "angular velocity: " << angularVelocity << std::endl;
+	float torque = contact.x * force.y - contact.y * force.x; std::cout << "torque: " << torque << std::endl; //std::cout << "im: " << GetInverseMoment() << std::endl;
+	angularVelocity += torque * GetInverseMoment();std::cout << "angular velocity: " << angularVelocity << std::endl;
 }
 
 void PhysicsObject::Update(float deltaTime)
