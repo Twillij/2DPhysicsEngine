@@ -77,9 +77,6 @@ void PhysicsWorld::ResolveCollision(Collision collision)
 {
 	PhysicsObject* a = collision.objectA;
 	PhysicsObject* b = collision.objectB;
-	float ima = a->GetInverseMass();
-	float imb = b->GetInverseMass();
-	float imSum = ima + imb;
 	vec2 ra = collision.contactA - a->position;
 	vec2 rb = collision.contactB - b->position;
 
@@ -96,6 +93,11 @@ void PhysicsWorld::ResolveCollision(Collision collision)
 
 	// calculate restitution
 	float e = std::min(a->restitution, b->restitution);
+
+	float raCrossN = ra.x * collision.normal.y - ra.y * collision.normal.x;
+	float rbCrossN = rb.x * collision.normal.y - rb.y * collision.normal.x;
+	float imSum = a->GetInverseMass() + powf(raCrossN, 2) * a->GetInverseMoment()
+				+ b->GetInverseMass() + powf(rbCrossN, 2) * b->GetInverseMoment();
 
 	// calculate impulse magnitude
 	float m = -(1 + e) * contactVel / (imSum);
@@ -138,16 +140,16 @@ void PhysicsWorld::ResolveCollision(Collision collision)
 		}
 
 		// Apply friction impulse
-		a->ApplyForce(fImpulse, ra);
-		b->ApplyForce(-fImpulse, rb);
+		a->ApplyForce(-fImpulse, ra);
+		b->ApplyForce(fImpulse, rb);
 	}
 
 	// apply positional correction
 	float percent = 0.2f;
 	float buffer = 0.01f;
 	vec2 correction = std::max(collision.penetration - buffer, 0.0f) / (imSum) * percent * collision.normal;
-	a->position -= ima * correction;
-	b->position += imb * correction;
+	a->position -= a->GetInverseMass() * correction;
+	b->position += b->GetInverseMass() * correction;
 }
 
 void PhysicsWorld::Update(float deltaTime)
@@ -158,7 +160,7 @@ void PhysicsWorld::Update(float deltaTime)
 
 	for (int i = 0; i < objects.size(); ++i)
 	{
-		objects[i]->ApplyForce(gravity, vec2(0));
+		objects[i]->ApplyForce(gravity, vec2(0, 1));
 		objects[i]->Update(deltaTime);
 	}	
 }
