@@ -1,7 +1,12 @@
 #include "PhysicsObject.h"
 #include "PhysicsWorld.h"
 #include "Collision.h"
+#include "Box.h"
 #include <iostream>
+#include <glm/geometric.hpp>
+
+static const float LINEAR_THRESHOLD = 0.1f;
+static const float ANGULAR_THRESHOLD = 0.01f;
 
 PhysicsWorld* PhysicsObject::GetWorld()
 {
@@ -44,6 +49,11 @@ void PhysicsObject::ApplyForce(vec2 force, vec2 contact)
 
 void PhysicsObject::Update(float deltaTime)
 {
+	velocity -= velocity * linearDrag * deltaTime;
+	velocity = (length(velocity) < LINEAR_THRESHOLD) ? vec2(0) : velocity;
 	position += velocity * deltaTime * deltaTime;
-	rotation += angularVelocity * deltaTime;// *deltaTime; //std::cout << "rotation: " << rotation << std::endl;
+
+	angularVelocity -= angularVelocity * angularDrag * deltaTime;
+	angularVelocity = (abs(angularVelocity) < ANGULAR_THRESHOLD) ? 0 : angularVelocity;
+	rotation += angularVelocity * deltaTime * deltaTime; //std::cout << "rotation: " << rotation << std::endl;
 }

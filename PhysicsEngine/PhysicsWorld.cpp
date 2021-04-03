@@ -100,24 +100,10 @@ void PhysicsWorld::ResolveCollision(Collision collision)
 	// calculate impulse magnitude
 	float m = -(1 + e) * contactVel / (imSum);
 
-	//vec2 perp(collision.normal.y, -collision.normal.x);
-	//float radiusA = dot(collision.contactA - a->position, -perp);
-	//float radiusB = dot(collision.contactB - b->position, perp);
-	//float velocityA = dot(a->velocity, collision.normal) - radiusA * a->angularVelocity;
-	//float velocityB = dot(b->velocity, collision.normal) + radiusA * b->angularVelocity;
-
-	//if (velocityA > velocityB)
-	//{
-	//	float massA = 1 / (a->GetInverseMass() + radiusA * radiusA * a->GetInverseMoment());
-	//	float massB = 1 / (b->GetInverseMass() + radiusB * radiusB * a->GetInverseMoment());
-
-	//	mag = (1 + e) * massA * massB / (massA + massB) * (velocityA - velocityB);
-	//}
-
 	// apply impulse
 	vec2 impulse = m * collision.normal;
-	a->ApplyForce(-impulse + gravity, ra);
-	b->ApplyForce(impulse - gravity, rb);
+	a->ApplyForce(-impulse, ra);
+	b->ApplyForce(impulse, rb);
 
 	// recalculate relative velocity after impulse is applied
 	rv = b->velocity + vec2(-b->angularVelocity * rb.y, b->angularVelocity * rb.x)
@@ -132,13 +118,13 @@ void PhysicsWorld::ResolveCollision(Collision collision)
 	// calculate the magnitude to apply along the friction vector
 	float fm = -dot(rv, fv) / (imSum);
 
-	float fBuffer = 0.01f;
+	float fBuffer = 1.0f;
 	if (abs(fm) > fBuffer)
 	{
 		vec2 fImpulse;
 
 		// approximate the constant in coulomb's law using the static friction of each object
-		float c = sqrtf(a->staticFriction * a->staticFriction + b->staticFriction * b->staticFriction);
+		float c = sqrtf(a->staticFriction * b->staticFriction);
 
 		// clamp magnitude of friction and create impulse vector
 		if (abs(fm) < m * c)
@@ -147,13 +133,13 @@ void PhysicsWorld::ResolveCollision(Collision collision)
 		}
 		else
 		{
-			c = sqrtf(a->kineticFriction * a->kineticFriction + b->kineticFriction * b->kineticFriction);
+			c = sqrtf(a->kineticFriction * b->kineticFriction);
 			fImpulse = fv * -m * c;
 		}
 
 		// Apply friction impulse
-		//a->ApplyForce(-fImpulse, ra);
-		//a->ApplyForce(-fImpulse, rb);
+		a->ApplyForce(fImpulse, ra);
+		b->ApplyForce(-fImpulse, rb);
 	}
 
 	// apply positional correction

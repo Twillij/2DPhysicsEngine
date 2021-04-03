@@ -17,8 +17,11 @@ bool PhysicsEngineApp::startup()
 	renderer = new Renderer2D();
 	font = new Font("./font/consolas.ttf", 32);
 
-	Box* platform = new Box(vec2(0, -40), vec2(50, 2), 0);
+	Box* platform = new Box(vec2(0, -40), vec2(80, 2), 0);
 	world->SpawnObject(platform);
+
+	Box* wall = new Box(vec2(85, 0), vec2(2, 56), 0);
+	world->SpawnObject(wall);
 
 	Circle* circle = new Circle(vec2(0, 0), 10, 0);
 	world->SpawnObject(circle);
@@ -74,6 +77,7 @@ void PhysicsEngineApp::draw()
 
 	// output some text, uses the last used colour
 	renderer->drawText(font, "Press ESC to quit", 0, 0);
+	renderer->drawText(font, "Left click to spawn circles", 0, 700);
 
 	// done drawing sprites
 	renderer->end();

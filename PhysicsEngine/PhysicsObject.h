@@ -25,9 +25,11 @@ public:
 	float angularVelocity = 0;
 
 	// pseudo 'constant' variables
-	float restitution = 0.5f;
-	float staticFriction = 0.5f;
-	float kineticFriction = 0.1f;
+	float restitution = 0.3f;
+	float staticFriction = 0.4f;
+	float kineticFriction = 0.2f;
+	float linearDrag = 0.3f;
+	float angularDrag = 0.3f;
 
 	PhysicsWorld* GetWorld();
 	void SetWorld(PhysicsWorld* world);
