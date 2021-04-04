@@ -10,6 +10,11 @@ PhysicsWorld::~PhysicsWorld()
 		delete objects[i];
 }
 
+vector<PhysicsObject*> PhysicsWorld::GetWorldObjects()
+{
+	return objects;
+}
+
 bool PhysicsWorld::SpawnObject(PhysicsObject* object)
 {
 	if (object)
@@ -39,6 +44,7 @@ bool PhysicsWorld::DestroyObject(PhysicsObject* object)
 
 void PhysicsWorld::DestroyOffboundObjects(vec2 lowerBounds, vec2 upperBounds, float margin)
 {
+	// destroy all objects that exit the given boundaries
 	for (int i = 0; i < objects.size(); ++i)
 	{
 		if (objects[i]->position.x < lowerBounds.x - margin ||
@@ -55,6 +61,8 @@ void PhysicsWorld::CheckCollisions()
 {
 	vector<Collision> collisions;
 
+	// check for possible collisions between all physics objects
+	// add the collision info to an array to be resolved
 	for (int i = 0; i < objects.size() - 1; ++i)
 	{
 		for (int j = i + 1; j < objects.size(); ++j)
@@ -66,6 +74,7 @@ void PhysicsWorld::CheckCollisions()
 		}
 	}
 
+	// resolve all the collisions that occured
 	for (int i = 0; i < collisions.size(); ++i)
 	{
 		if (collisions[i].hasCollided)
@@ -121,7 +130,7 @@ void PhysicsWorld::ResolveCollision(Collision collision)
 	// calculate the magnitude to apply along the friction vector
 	float fm = -dot(rv, fv) / (imSum);
 
-	float fBuffer = 1.0f;
+	float fBuffer = 0.01f;
 	if (abs(fm) > fBuffer)
 	{
 		vec2 fImpulse;

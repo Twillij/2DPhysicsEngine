@@ -28,8 +28,8 @@ public:
 	float restitution = 0.5f;
 	float staticFriction = 0.5f;
 	float kineticFriction = 0.3f;
-	float linearDrag = 0.3f;
-	float angularDrag = 0.3f;
+	float linearDrag = 0.2f;
+	float angularDrag = 0.2f;
 
 	PhysicsWorld* GetWorld();
 	void SetWorld(PhysicsWorld* world);

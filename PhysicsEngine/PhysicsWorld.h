@@ -18,6 +18,8 @@ public:
 
 	vec2 gravity = vec2(0.0f, -9.81f);
 
+	vector<PhysicsObject*> GetWorldObjects();
+
 	bool SpawnObject(PhysicsObject* object);
 	bool DestroyObject(PhysicsObject* object);
 	void DestroyOffboundObjects(vec2 lowerBounds, vec2 upperBounds, float margin = 0);
