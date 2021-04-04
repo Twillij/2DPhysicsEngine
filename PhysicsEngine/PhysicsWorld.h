@@ -16,6 +16,7 @@ public:
 	PhysicsWorld() {}
 	virtual ~PhysicsWorld();
 
+	float timeStep = 0.01f;
 	vec2 gravity = vec2(0.0f, -9.81f);
 
 	vector<PhysicsObject*> GetWorldObjects();
@@ -31,5 +32,6 @@ public:
 	virtual void Draw(Renderer2D* renderer);
 
 private:
+	float accumulatedTime = 0;
 	vector<PhysicsObject*> objects;
 };

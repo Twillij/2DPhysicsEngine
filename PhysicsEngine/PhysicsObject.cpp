@@ -55,5 +55,5 @@ void PhysicsObject::Update(float deltaTime)
 
 	angularVelocity -= angularVelocity * angularDrag * deltaTime;
 	angularVelocity = (abs(angularVelocity) < ANGULAR_THRESHOLD) ? 0 : angularVelocity;
-	rotation += angularVelocity *deltaTime *deltaTime;
+	rotation += angularVelocity * deltaTime * deltaTime;
 }

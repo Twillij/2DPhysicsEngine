@@ -164,15 +164,23 @@ void PhysicsWorld::ResolveCollision(Collision collision)
 
 void PhysicsWorld::Update(float deltaTime)
 {
-	DestroyOffboundObjects(vec2(-100, -56.25f), vec2(100, 56.25f), 10);
+	accumulatedTime += deltaTime;
 
-	CheckCollisions();
-
-	for (int i = 0; i < objects.size(); ++i)
+	// update physics at fixed time step
+	while (accumulatedTime >= timeStep)
 	{
-		objects[i]->ApplyForce(gravity, vec2(0, 1));
-		objects[i]->Update(deltaTime);
-	}	
+		DestroyOffboundObjects(vec2(-100, -56.25f), vec2(100, 56.25f), 10);
+
+		CheckCollisions();
+
+		for (int i = 0; i < objects.size(); ++i)
+		{
+			objects[i]->ApplyForce(gravity, vec2(0, 1));
+			objects[i]->Update(timeStep);
+		}
+
+		accumulatedTime -= timeStep;
+	}
 }
 
 void PhysicsWorld::Draw(Renderer2D* renderer)
