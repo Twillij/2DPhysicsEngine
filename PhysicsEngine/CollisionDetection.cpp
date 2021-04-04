@@ -192,6 +192,14 @@ Collision physics::CircleToBox(Circle* circle, Box* box)
 		// at this point collision is confirmed
 		collision.hasCollided = true;
 
+		// if the normal is (0, 0) then randomise the direction
+		if (normal == vec2(0, 0))
+		{
+			srand(time(NULL));
+			float exp = rand() % 2 + 1;
+			normal.x = powf(-1, exp);
+		}
+
 		// collision normal needs to be flipped to point outside if circle is inside box
 		collision.normal = (inside) ? normalize(normal) : -normalize(normal);
 		collision.penetration = circle->radius - normalLength;

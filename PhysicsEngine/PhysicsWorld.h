@@ -16,7 +16,7 @@ public:
 	PhysicsWorld() {}
 	virtual ~PhysicsWorld();
 
-	float timeStep = 0.01f;
+	float timeStep = 0.02f;
 	vec2 gravity = vec2(0.0f, -9.81f);
 
 	vector<PhysicsObject*> GetWorldObjects();

@@ -89,7 +89,7 @@ void PhysicsWorld::ResolveCollision(Collision collision)
 	PhysicsObject* b = collision.objectB;
 	vec2 ra = collision.contactA - a->position;
 	vec2 rb = collision.contactB - b->position;
-
+	
 	// calculate relative velocity
 	vec2 rv = b->velocity + vec2(-b->angularVelocity * rb.y, b->angularVelocity * rb.x)
 			- a->velocity - vec2(-a->angularVelocity * ra.y, a->angularVelocity * ra.x);
@@ -178,7 +178,7 @@ void PhysicsWorld::ResolveCollision(Collision collision)
 void PhysicsWorld::Update(float deltaTime)
 {
 	accumulatedTime += deltaTime;
-
+	
 	// update physics at fixed time step
 	while (accumulatedTime >= timeStep)
 	{
