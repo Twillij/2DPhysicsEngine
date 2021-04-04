@@ -2,6 +2,7 @@
 #include "PhysicsObject.h"
 #include "Collision.h"
 #include <Gizmos.h>
+#include <iostream>
 #include <glm/ext.hpp>
 
 PhysicsWorld::~PhysicsWorld()
@@ -109,13 +110,22 @@ void PhysicsWorld::ResolveCollision(Collision collision)
 	float imSum = a->GetInverseMass() + powf(raCrossN, 2) * a->GetInverseMoment()
 				+ b->GetInverseMass() + powf(rbCrossN, 2) * b->GetInverseMoment();
 
+	// exit if inverse mass sum is 0
+	// i.e. when both objects are static
+	if (imSum == 0.0f)
+		return;
+
 	// calculate impulse magnitude
 	float m = -(1 + e) * contactVel / (imSum);
 
 	// apply impulse
 	vec2 impulse = m * collision.normal;
-	a->ApplyForce(-impulse, ra);
-	b->ApplyForce(impulse, rb);
+
+	if (a->GetMass() > 0)
+		a->ApplyForce(-impulse, ra);
+
+	if (b->GetMass() > 0)
+		b->ApplyForce(impulse, rb);
 
 	// recalculate relative velocity after impulse is applied
 	rv = b->velocity + vec2(-b->angularVelocity * rb.y, b->angularVelocity * rb.x)
@@ -150,8 +160,11 @@ void PhysicsWorld::ResolveCollision(Collision collision)
 		}
 
 		// Apply friction impulse
-		a->ApplyForce(-fImpulse, ra);
-		b->ApplyForce(fImpulse, rb);
+		if (a->GetMass() > 0)
+			a->ApplyForce(-fImpulse, ra);
+
+		if (b->GetMass() > 0)
+			b->ApplyForce(fImpulse, rb);
 	}
 
 	// apply positional correction
