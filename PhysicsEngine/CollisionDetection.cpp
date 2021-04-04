@@ -223,8 +223,12 @@ Collision physics::BoxToBox(Box* boxA, Box* boxB)
 			// SAT test on y axis
 			if (overlapY > 0)
 			{
-				// at this point a collision would have already occured
+				// at this point a collision is confirmed
 				collision.hasCollided = true;
+
+				// initialise the contact points as their own positions
+				collision.contactA = boxA->position;
+				collision.contactB = boxB->position;
 
 				// determine which axis has the least penetration
 				if (overlapX < overlapY)
@@ -232,12 +236,40 @@ Collision physics::BoxToBox(Box* boxA, Box* boxB)
 					// point towards B knowing that the distance vector points from A to B
 					collision.normal = (distVec.x < 0) ? vec2(-1, 0) : vec2(1, 0);
 					collision.penetration = overlapX;
+
+					// if box A is to the left of box B, or vice versa
+					// offset the contact points by their X extent
+					if (boxA->position.x < boxB->position.x)
+					{
+						
+						collision.contactA.x += boxA->extents.x;
+						collision.contactB.x -= boxB->extents.x;
+					}
+					else
+					{
+						collision.contactA.x -= boxA->extents.x;
+						collision.contactB.x += boxB->extents.x;
+					}
 				}
 				else
 				{
 					// point towards B knowing that the distance vector points from A to B
 					collision.normal = (distVec.y < 0) ? vec2(0, -1) : vec2(0, 1);
 					collision.penetration = overlapY;
+
+					// if box A is to the bottom of box B, or vice versa
+					// offset the contact points by their Y extent
+					if (boxA->position.x < boxB->position.x)
+					{
+
+						collision.contactA.y += boxA->extents.y;
+						collision.contactB.y -= boxB->extents.y;
+					}
+					else
+					{
+						collision.contactA.y -= boxA->extents.y;
+						collision.contactB.y += boxB->extents.y;
+					}
 				}
 			}
 		}

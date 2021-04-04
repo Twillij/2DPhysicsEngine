@@ -94,6 +94,7 @@ void PhysicsWorld::ResolveCollision(Collision collision)
 	// calculate restitution
 	float e = std::min(a->restitution, b->restitution);
 
+	// calculate the inverse sum of masses
 	float raCrossN = ra.x * collision.normal.y - ra.y * collision.normal.x;
 	float rbCrossN = rb.x * collision.normal.y - rb.y * collision.normal.x;
 	float imSum = a->GetInverseMass() + powf(raCrossN, 2) * a->GetInverseMoment()
